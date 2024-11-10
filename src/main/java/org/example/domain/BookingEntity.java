@@ -1,0 +1,86 @@
+package org.example.domain;
+
+import java.util.List;
+import java.util.Objects;
+
+public class BookingEntity {
+
+    private Integer id;
+    private Integer flightId;
+    private String passengerName;
+    private List<String> passengers;
+    private boolean isCancelled;
+
+    public BookingEntity(Integer flightId, String passengerName, List<String> passengers, boolean isCancelled) {
+        this(null, flightId, passengerName, passengers, isCancelled);
+    }
+
+    public BookingEntity(Integer id, Integer flightId, String passengerName, List<String> passengers, boolean isCancelled) {
+        this.id = id;
+        this.flightId = flightId;
+        this.passengerName = passengerName;
+        this.passengers = passengers;
+        this.isCancelled = isCancelled;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(Integer flightId) {
+        this.flightId = flightId;
+    }
+
+    public String getPassengerName() {
+        return passengerName;
+    }
+
+    public void setPassengerName(String passengerName) {
+        this.passengerName = passengerName;
+    }
+
+    public List<String> getPassengers() {
+        return passengers;
+    }
+
+    public void setPassengers(List<String> passengers) {
+        this.passengers = passengers;
+    }
+
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        isCancelled = cancelled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookingEntity that = (BookingEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(flightId, that.flightId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, flightId);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("BookingEntity{id=%d, flightId=%d, passengerName='%s', passengers=%s, isCancelled=%s}",
+                id, flightId, passengerName, passengers, isCancelled);
+    }
+
+
+}
