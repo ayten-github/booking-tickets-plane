@@ -1,4 +1,4 @@
-package org.example.domain.utils;
+package org.example.utils;
 
 import java.security.SecureRandom;
 import java.util.UUID;

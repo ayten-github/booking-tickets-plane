@@ -1,7 +1,7 @@
 package org.example.domain.dao.impl;
 
-import org.example.domain.BookingEntity;
 import org.example.domain.dao.BookingDao;
+import org.example.domain.entity.BookingEntity;
 
 import java.io.EOFException;
 import java.io.FileInputStream;

@@ -1,7 +1,7 @@
 package org.example.domain.dao.impl;
 
-import org.example.domain.FlightEntity;
 import org.example.domain.dao.FlightDao;
+import org.example.domain.entity.FlightEntity;
 
 
 import java.util.HashSet;
