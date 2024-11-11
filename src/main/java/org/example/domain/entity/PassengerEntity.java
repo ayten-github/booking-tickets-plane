@@ -1,49 +1,54 @@
 package org.example.domain.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PassengerEntity {
+public class PassengerEntity implements Serializable {
 
-    private String id;
-    private String fullName;
-    private String surname;
+    private Long id;
+    private String firstName;
+    private String lastName;
     private String login;
     private String password;
 
-    public PassengerEntity(String fullName, String surname, String login, String password) {
-        this(null, fullName, surname, login, password);
+    public PassengerEntity(String firstName, String lastName, String login, String password) {
+        this(null, firstName, lastName, login, password);
     }
 
-    public PassengerEntity(String id, String fullName, String surname, String login, String password) {
+    public PassengerEntity(Long id, String firstName, String lastName, String login, String password) {
         this.id = id;
-        this.fullName = fullName;
-        this.surname = surname;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.login = login;
         this.password = password;
     }
 
-    public String getId() {
+    public PassengerEntity() {
+
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String fullName) {
+        this.firstName = fullName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String surname) {
+        this.lastName = surname;
     }
 
     public String getLogin() {
@@ -77,7 +82,7 @@ public class PassengerEntity {
 
     @Override
     public String toString() {
-        return String.format("PassengerEntity{id='%s', fullName='%s', surname='%s', login='%s', password='%s'}",
-                id, fullName, surname, login, password);
+        return String.format("PassengerEntity{id='%s', firstName='%s', lastName='%s', login='%s'}",
+                id, firstName, lastName, login);
     }
 }

@@ -5,37 +5,37 @@ import java.util.Objects;
 
 public class BookingEntity {
 
-    private Integer id;
-    private Integer flightId;
+    private Long id;
+    private Long flightId;
     private String passengerName;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
-    public BookingEntity(Integer flightId, PassengerEntity passenger, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingEntity(Long flightId, PassengerEntity passenger, List<PassengerEntity> passengers, boolean isCancelled) {
         this(null, flightId, passenger, passengers, isCancelled);
     }
 
-    public BookingEntity(Integer id, Integer flightId, PassengerEntity passenger, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingEntity(Long id, Long flightId, PassengerEntity passenger, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
-        this.passengerName = passenger.getFullName();
+        this.passengerName = passenger.getFirstName();
         this.passengers = passengers;
         this.isCancelled = isCancelled;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getFlightId() {
+    public Long getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(Integer flightId) {
+    public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 

@@ -12,20 +12,21 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class FlightFileDao extends FlightDao {
 
+    private final String FILE_PATH = "src/main/java/org/example/files/Flight_records";
     private final AtomicLong idGenerator = new AtomicLong(0);
-    private final String FILE_PATH = "src/main/java/org/example/domain/files/Flight_records";
 
     @Override
-    public FlightEntity getById(Long id) {
+    public Optional<FlightEntity> getById(Long id) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             FlightEntity flightEntity;
             while ((flightEntity = (FlightEntity) ois.readObject()) != null) {
                 if (flightEntity.getId().equals(id)) {
-                    return flightEntity;
+                    return Optional.of(flightEntity);
                 }
             }
         } catch (EOFException e) {
