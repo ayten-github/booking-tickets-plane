@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class FlightInMemoryDao extends FlightDao {
 
     private static final Set<FlightEntity> FLIGHTS = new HashSet<>();
-    private final AtomicLong idGenerator = new AtomicLong(0);
+    private final AtomicLong idGenerator = new AtomicLong();
 
     @Override
     public FlightEntity save(FlightEntity flightEntity) {
