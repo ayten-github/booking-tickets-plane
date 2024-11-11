@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.entity;
 
 import java.util.Date;
 import java.util.List;
