@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class PassengerEntity {
 
-    private String id;
+    private Long id;
     private String fullName;
     private String surname;
     private String login;
@@ -14,7 +14,7 @@ public class PassengerEntity {
         this(null, fullName, surname, login, password);
     }
 
-    public PassengerEntity(String id, String fullName, String surname, String login, String password) {
+    public PassengerEntity(Long id, String fullName, String surname, String login, String password) {
         this.id = id;
         this.fullName = fullName;
         this.surname = surname;
@@ -22,11 +22,11 @@ public class PassengerEntity {
         this.password = password;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,7 +77,7 @@ public class PassengerEntity {
 
     @Override
     public String toString() {
-        return String.format("PassengerEntity{id='%s', fullName='%s', surname='%s', login='%s', password='%s'}",
-                id, fullName, surname, login, password);
+        return String.format("PassengerEntity{id='%s', fullName='%s', surname='%s', login='%s'}",
+                id, fullName, surname, login);
     }
 }

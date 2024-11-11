@@ -16,8 +16,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class FlightFileDao extends FlightDao {
 
-    private final AtomicLong idGenerator = new AtomicLong(0);
     private final String FILE_PATH = "src/main/java/org/example/domain/files/Flight_records";
+    private final AtomicLong idGenerator = new AtomicLong(0);
 
     @Override
     public FlightEntity getById(Long id) {

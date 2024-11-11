@@ -13,17 +13,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BookingFileDao extends BookingDao {
-    private final AtomicInteger idGenerator = new AtomicInteger(1);
+
     private final String FILE_PATH = "src/main/java/org/example/domain/files/Booking_records";
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public BookingEntity getById(Long id) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             BookingEntity bookingEntity;
             while ((bookingEntity = (BookingEntity) ois.readObject()) != null) {
-                if (bookingEntity.getId().equals(id.intValue())) {
+                if (bookingEntity.getId().equals(id)) {
                     return bookingEntity;
                 }
             }
@@ -88,7 +90,7 @@ public class BookingFileDao extends BookingDao {
     public void delete(Long id) {
         List<BookingEntity> allBookings = new ArrayList<>(getAll());
         BookingEntity bookingtoDelete = allBookings.stream()
-                .filter(flight -> flight.getId().equals(id.intValue()))
+                .filter(flight -> flight.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 

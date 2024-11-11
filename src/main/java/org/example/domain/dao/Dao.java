@@ -2,11 +2,11 @@ package org.example.domain.dao;
 
 import java.util.Collection;
 
-public interface Dao <T,Long>{
+public interface Dao <T,I>{
 
-    T getById(java.lang.Long id);
+    T getById(I id);
     Collection<T> getAll();
     T save(T entity);
     T update(T entity);
-    void delete(java.lang.Long id);
+    void delete(I id);
 }

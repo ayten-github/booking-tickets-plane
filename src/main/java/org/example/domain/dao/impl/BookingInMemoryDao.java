@@ -8,17 +8,18 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
+import java.util.concurrent.atomic.AtomicLong;
 
 
 public class BookingInMemoryDao extends BookingDao {
+
     private static final Set<BookingEntity> BOOKINGS = new HashSet<>();
-    private final AtomicInteger idGenerator = new AtomicInteger(1);
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public BookingEntity getById(Long id) {
         return BOOKINGS.stream()
-                .filter(booking -> booking.getId().equals(id.intValue()))
+                .filter(booking -> booking.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
