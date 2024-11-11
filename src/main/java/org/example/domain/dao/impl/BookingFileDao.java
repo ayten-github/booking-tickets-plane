@@ -12,21 +12,21 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BookingFileDao extends BookingDao {
 
-    private final String FILE_PATH = "src/main/java/org/example/domain/files/Booking_records";
+    private final String FILE_PATH = "src/main/java/org/example/files/Booking_records";
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
-    public BookingEntity getById(Long id) {
+    public Optional<BookingEntity> getById(Long id) {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             BookingEntity bookingEntity;
             while ((bookingEntity = (BookingEntity) ois.readObject()) != null) {
                 if (bookingEntity.getId().equals(id)) {
-                    return bookingEntity;
+                    return Optional.of(bookingEntity);
                 }
             }
         } catch (EOFException e) {

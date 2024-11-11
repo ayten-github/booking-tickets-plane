@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 
@@ -17,11 +16,11 @@ public class BookingInMemoryDao extends BookingDao {
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
-    public BookingEntity getById(Long id) {
-        return BOOKINGS.stream()
+    public Optional<BookingEntity> getById(Long id) {
+        return Optional.ofNullable(BOOKINGS.stream()
                 .filter(booking -> booking.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override

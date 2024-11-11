@@ -6,45 +6,50 @@ import org.example.domain.entity.PassengerEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class PassengerInMemoryDao extends PassengerDao {
 
-    private final List<PassengerEntity> PASSENGER = new ArrayList<>();
+    private static final List<PassengerEntity> PASSENGERS = new ArrayList<>();
     private final AtomicLong counter = new AtomicLong(0);
 
     @Override
-    public PassengerEntity getById(Long id) {
-        return PASSENGER.stream()
+    public Optional<PassengerEntity> getById(Long id) {
+        return Optional.ofNullable(PASSENGERS.stream()
                 .filter(passenger -> passenger.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElse(null));
     }
 
     @Override
     public Collection<PassengerEntity> getAll() {
-        return new ArrayList<>(PASSENGER);
+        return new ArrayList<>(PASSENGERS);
     }
 
     @Override
     public PassengerEntity save(PassengerEntity entity) {
         entity.setId(counter.incrementAndGet());
-        PASSENGER.add(entity);
+        PASSENGERS.add(entity);
         return entity;
     }
 
     @Override
     public PassengerEntity update(PassengerEntity entity) {
-        PassengerEntity byId = getById(entity.getId());
-        if (byId != null) {
-            byId.setFullName(entity.getFullName());
-            byId.setSurname(entity.getSurname());
+        Optional<PassengerEntity> passengerOptional = getById(entity.getId());
+
+        if (passengerOptional.isPresent()) {
+            PassengerEntity passenger = passengerOptional.get();
+            passenger.setFirstName(entity.getFirstName());
+            passenger.setLastName(entity.getLastName());
+            return passenger;
         }
-        return byId;
+
+        return null;
     }
 
     @Override
     public void delete(Long id) {
-        PASSENGER.removeIf(passenger -> passenger.getId().equals(id));
+        PASSENGERS.removeIf(passenger -> passenger.getId().equals(id));
     }
 }

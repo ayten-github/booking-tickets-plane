@@ -5,6 +5,7 @@ import org.example.domain.entity.FlightEntity;
 
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,10 +22,10 @@ public class FlightInMemoryDao extends FlightDao {
     }
 
     @Override
-    public FlightEntity getById(Long id) {
-       return FLIGHTS.stream()
-                .filter(flightEntity -> flightEntity.getId().equals(id))
-                .findFirst().orElse(null);
+    public Optional<FlightEntity> getById(Long id) {
+       return Optional.ofNullable(FLIGHTS.stream()
+               .filter(flightEntity -> flightEntity.getId().equals(id))
+               .findFirst().orElse(null));
     }
 
     @Override
@@ -34,11 +35,15 @@ public class FlightInMemoryDao extends FlightDao {
 
     @Override
     public FlightEntity update(FlightEntity flightEntity) {
-        FlightEntity flight = getById(flightEntity.getId());
-        if (flight!=null) {
-             flight.setSeatAvailability(flightEntity.getSeatAvailability());
+        Optional<FlightEntity> flightOptional = getById(flightEntity.getId());
+
+        if (flightOptional.isPresent()) {
+            FlightEntity flight = flightOptional.get();
+            flight.setSeatAvailability(flightEntity.getSeatAvailability());
+            return flight;
         }
-        return flightEntity;
+
+        return null;
     }
 
     @Override

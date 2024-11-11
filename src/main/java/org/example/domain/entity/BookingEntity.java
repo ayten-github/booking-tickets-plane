@@ -18,7 +18,7 @@ public class BookingEntity {
     public BookingEntity(Long id, Long flightId, PassengerEntity passenger, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
-        this.passengerName = passenger.getFullName();
+        this.passengerName = passenger.getFirstName();
         this.passengers = passengers;
         this.isCancelled = isCancelled;
     }

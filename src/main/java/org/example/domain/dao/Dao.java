@@ -1,12 +1,17 @@
 package org.example.domain.dao;
 
 import java.util.Collection;
+import java.util.Optional;
 
-public interface Dao <T,I>{
+public interface Dao<T, I> {
 
-    T getById(I id);
+    Optional<T> getById(I id);
+
     Collection<T> getAll();
+
     T save(T entity);
+
     T update(T entity);
+
     void delete(I id);
 }

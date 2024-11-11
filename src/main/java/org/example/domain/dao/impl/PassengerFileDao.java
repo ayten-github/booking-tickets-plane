@@ -3,22 +3,27 @@ package org.example.domain.dao.impl;
 import org.example.domain.dao.PassengerDao;
 import org.example.domain.entity.PassengerEntity;
 
-import java.io.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 
 public class PassengerFileDao extends PassengerDao {
 
-    private final String FILE_PATH = "src/main/java/org/example/domain/files/PassengerFile.txt";
+    private final String FILE_PATH = "C:/workSpace/demopractice/booking_tickets_plane_appp/src/main/java/org/example/files/PassengerFile.txt";
     private final AtomicLong idGenerator = new AtomicLong(0);
 
 
     @Override
-    public PassengerEntity getById(Long id) {
+    public Optional<PassengerEntity> getById(Long id) {
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
             PassengerEntity passengerEntity;
@@ -27,7 +32,7 @@ public class PassengerFileDao extends PassengerDao {
                     passengerEntity = (PassengerEntity) ois.readObject();
 
                     if (passengerEntity.getId().equals(id)) {
-                        return passengerEntity;
+                        return Optional.of(passengerEntity);
                     }
                 } catch (ClassNotFoundException e) {
                     System.err.println("Class not found: " + e.getMessage());
