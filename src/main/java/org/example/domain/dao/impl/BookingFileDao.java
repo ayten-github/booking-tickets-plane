@@ -1,54 +1,43 @@
 package org.example.domain.dao.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.domain.dao.BookingDao;
 import org.example.domain.entity.BookingEntity;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BookingFileDao extends BookingDao {
 
-    private final String FILE_PATH = "src/main/java/org/example/files/Booking_records";
+    private final String FILE_PATH = "src/main/java/org/example/files/Booking_records.json";
     private final AtomicLong idGenerator = new AtomicLong(1);
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Optional<BookingEntity> getById(Long id) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
-            BookingEntity bookingEntity;
-            while ((bookingEntity = (BookingEntity) ois.readObject()) != null) {
-                if (bookingEntity.getId().equals(id)) {
-                    return Optional.of(bookingEntity);
-                }
-            }
-        } catch (EOFException e) {
-            // Reached the end of the file, no further processing is needed, so we can safely ignore this exception.
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error reading FlightEntity from file: " + e.getMessage());
-        }
-        return null;
+        Collection<BookingEntity> bookings = getAll();
+
+        return bookings.stream()
+                .filter(booking -> booking.getId().equals(id))
+                .findFirst();
     }
 
     @Override
     public Collection<BookingEntity> getAll() {
-        List<BookingEntity> bookings = new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
-            BookingEntity bookingEntity;
-            while ((bookingEntity = (BookingEntity) ois.readObject()) != null) {
-                bookings.add(bookingEntity);
+        Collection<BookingEntity> bookings = new ArrayList<>();
+        File file = new File(FILE_PATH);
+
+        if (file.exists()) {
+            try {
+                bookings = mapper.readValue(file, new TypeReference<Collection<BookingEntity>>() {});
+            } catch (IOException e) {
+                System.err.println("Error reading BookingEntity from file: " + e.getMessage());
             }
-        } catch (EOFException e) {
-            // Reached the end of the file, no further processing is needed, so we can safely ignore this exception.
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error reading FlightEntity from file: " + e.getMessage());
         }
         return bookings;
     }
@@ -59,28 +48,26 @@ public class BookingFileDao extends BookingDao {
             entity.setId(idGenerator.incrementAndGet());
         }
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH, true))) {
-            oos.writeObject(entity);
-            System.out.println("FlightEntity saved to file: " + FILE_PATH);
-        } catch (IOException e) {
-            System.err.println("Error saving FlightEntity: " + e.getMessage());
-        }
+        Collection<BookingEntity> bookings = new ArrayList<>(getAll());
+        bookings.add(entity);
+
+        saveAll(bookings);
         return entity;
     }
 
     @Override
     public BookingEntity update(BookingEntity entity) {
-        List<BookingEntity> allBookings = new ArrayList<>(getAll());
-        BookingEntity existingBookings = allBookings.stream()
-                .filter(flight -> flight.getId().equals(entity.getId()))
+        Collection<BookingEntity> bookings = new ArrayList<>(getAll());
+        BookingEntity existingBooking = bookings.stream()
+                .filter(booking -> booking.getId().equals(entity.getId()))
                 .findFirst()
                 .orElse(null);
 
-        if (existingBookings != null) {
-            allBookings.remove(existingBookings);
-            allBookings.add(entity);
+        if (existingBooking != null) {
+            bookings.remove(existingBooking);
+            bookings.add(entity);
 
-            saveAll(allBookings);
+            saveAll(bookings);
             return entity;
         }
         return null;
@@ -88,27 +75,25 @@ public class BookingFileDao extends BookingDao {
 
     @Override
     public void delete(Long id) {
-        List<BookingEntity> allBookings = new ArrayList<>(getAll());
-        BookingEntity bookingtoDelete = allBookings.stream()
-                .filter(flight -> flight.getId().equals(id))
+        Collection<BookingEntity> bookings = new ArrayList<>(getAll());
+        BookingEntity bookingToDelete = bookings.stream()
+                .filter(booking -> booking.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
-        if (bookingtoDelete != null) {
-            allBookings.remove(bookingtoDelete);
-            saveAll(allBookings);
-            System.out.println("FlightEntity with id " + id + " deleted.");
+        if (bookingToDelete != null) {
+            bookings.remove(bookingToDelete);
+            saveAll(bookings);
+            System.out.println("BookingEntity with id " + id + " deleted.");
         }
     }
 
-    private void saveAll(List<BookingEntity> bookings) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
-            for (BookingEntity booking : bookings) {
-                oos.writeObject(booking);
-            }
-            System.out.println("All FlightEntities saved to file.");
+    private void saveAll(Collection<BookingEntity> bookings) {
+        try {
+            mapper.writeValue(new File(FILE_PATH), bookings);
+            System.out.println("All BookingEntities saved to file.");
         } catch (IOException e) {
-            System.err.println("Error saving all FlightEntities: " + e.getMessage());
+            System.err.println("Error saving all BookingEntities: " + e.getMessage());
         }
     }
 }

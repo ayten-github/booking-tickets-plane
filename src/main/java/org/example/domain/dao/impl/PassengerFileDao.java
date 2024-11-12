@@ -1,63 +1,47 @@
 package org.example.domain.dao.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.domain.dao.PassengerDao;
 import org.example.domain.entity.PassengerEntity;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
+import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-
 public class PassengerFileDao extends PassengerDao {
 
-    private final String FILE_PATH = "C:/workSpace/demopractice/booking_tickets_plane_appp/src/main/java/org/example/files/PassengerFile.txt";
+    private final String FILE_PATH = "src/main/java/org/example/files/PassengerFile.json";
     private final AtomicLong idGenerator = new AtomicLong(0);
-
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Optional<PassengerEntity> getById(Long id) {
+        Collection<PassengerEntity> passengers = getAll();
 
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
-            PassengerEntity passengerEntity;
-            while (true) {
-                try {
-                    passengerEntity = (PassengerEntity) ois.readObject();
-
-                    if (passengerEntity.getId().equals(id)) {
-                        return Optional.of(passengerEntity);
-                    }
-                } catch (ClassNotFoundException e) {
-                    System.err.println("Class not found: " + e.getMessage());
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading PassengerEntity from file: " + e.getMessage());
-        }
-        return null;
+        return passengers.stream()
+                .filter(passenger -> passenger.getId().equals(id))
+                .findFirst();
     }
-
 
     @Override
     public Collection<PassengerEntity> getAll() {
-        List<PassengerEntity> bookings = new ArrayList<>();
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_PATH))) {
-            PassengerEntity passengerEntity;
-            while ((passengerEntity = (PassengerEntity) ois.readObject()) != null) {
-                bookings.add(passengerEntity);
+        List<PassengerEntity> passengers = new ArrayList<>();
+        File file = new File(FILE_PATH);
+
+        if (file.exists()) {
+            try {
+                passengers = mapper.readValue(file, new TypeReference<List<PassengerEntity>>() {});
+            } catch (IOException e) {
+                System.err.println("Error reading PassengerEntity from file: " + e.getMessage());
             }
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error reading PassengerEntity from file: " + e.getMessage());
         }
-        return bookings;
+
+        return passengers;
     }
 
     @Override
@@ -66,59 +50,53 @@ public class PassengerFileDao extends PassengerDao {
             entity.setId(idGenerator.incrementAndGet());
         }
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH, true))) {
-            oos.writeObject(entity);
-            System.out.println("PassengerEntity saved to file: " + FILE_PATH);
-        } catch (IOException e) {
-            System.err.println("Error saving PassengerEntity: " + e.getMessage());
-        }
+        Collection<PassengerEntity> passengers = getAll();
+        passengers.add(entity);
+
+        saveAll(passengers);
         return entity;
     }
 
     @Override
     public PassengerEntity update(PassengerEntity entity) {
-        List<PassengerEntity> allBookings = new ArrayList<>(getAll());
-        PassengerEntity existingPassengers = allBookings.stream()
-                .filter(flight -> flight.getId().equals(entity.getId()))
+        List<PassengerEntity> passengers = new ArrayList<>(getAll());
+        PassengerEntity existingPassenger = passengers.stream()
+                .filter(passenger -> passenger.getId().equals(entity.getId()))
                 .findFirst()
                 .orElse(null);
 
-        if (existingPassengers != null) {
-            allBookings.remove(existingPassengers);
-            allBookings.add(entity);
+        if (existingPassenger != null) {
+            passengers.remove(existingPassenger);
+            passengers.add(entity);
 
-            saveAll(allBookings);
+            saveAll(passengers);
             return entity;
         }
         return null;
-
     }
 
     @Override
     public void delete(Long id) {
-        List<PassengerEntity> allBookings = new ArrayList<>(getAll());
-        PassengerEntity toPassengerDelete = allBookings.stream()
-                .filter(flight -> flight.getId().equals(id))
+        List<PassengerEntity> passengers = new ArrayList<>(getAll());
+        PassengerEntity toDelete = passengers.stream()
+                .filter(passenger -> passenger.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
-        if (toPassengerDelete != null) {
-            allBookings.remove(toPassengerDelete);
-            saveAll(allBookings);
+        if (toDelete != null) {
+            passengers.remove(toDelete);
+            saveAll(passengers);
             System.out.println("PassengerEntity with id " + id + " deleted.");
         }
-
     }
 
-
-    private void saveAll(List<PassengerEntity> passengers) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_PATH))) {
-            for (PassengerEntity passenger : passengers) {
-                oos.writeObject(passenger);
-            }
+    private void saveAll(Collection<PassengerEntity> passengers) {
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), passengers);
             System.out.println("All PassengerEntities saved to file.");
         } catch (IOException e) {
             System.err.println("Error saving all PassengerEntities: " + e.getMessage());
         }
     }
+
 }
