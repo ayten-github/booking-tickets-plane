@@ -1,5 +1,6 @@
 package az.edu.turing.domain.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -7,21 +8,24 @@ import java.util.Objects;
 public class FlightEntity implements Comparable<FlightEntity> {
 
     private Long id;
-    private Date departureDate;
+    private LocalDateTime departureDate;
     private String destination;
-    private List<Boolean> seatAvailability;
+    private String from;
+    private int totalSeats;
+    private int availabilitySeats;
 
-    public FlightEntity(Date departureDate, String destination, List<Boolean> seatAvailability) {
-        this(null, departureDate, destination, seatAvailability);
+    public FlightEntity(LocalDateTime departureDate, String destination, String from, int totalSeats, int availabilitySeats) {
+        this(null, departureDate, destination, from, totalSeats, availabilitySeats);
     }
 
-    public FlightEntity(Long id, Date departureDate, String destination, List<Boolean> seatAvailability) {
+    public FlightEntity(Long id, LocalDateTime departureDate, String destination, String from, int totalSeats, int availabilitySeats) {
         this.id = id;
         this.departureDate = departureDate;
         this.destination = destination;
-        this.seatAvailability = seatAvailability;
+        this.from = from;
+        this.totalSeats = totalSeats;
+        this.availabilitySeats = availabilitySeats;
     }
-
 
     public Long getId() {
         return id;
@@ -31,12 +35,36 @@ public class FlightEntity implements Comparable<FlightEntity> {
         this.id = id;
     }
 
-    public Date getDepartureDate() {
+    public LocalDateTime getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public int getAvailabilitySeats() {
+        return availabilitySeats;
+    }
+
+    public void setAvailabilitySeats(int availabilitySeats) {
+        this.availabilitySeats = availabilitySeats;
     }
 
     public String getDestination() {
@@ -47,13 +75,7 @@ public class FlightEntity implements Comparable<FlightEntity> {
         this.destination = destination;
     }
 
-    public List<Boolean> getSeatAvailability() {
-        return seatAvailability;
-    }
 
-    public void setSeatAvailability(List<Boolean> seatAvailability) {
-        this.seatAvailability = seatAvailability;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -70,9 +92,7 @@ public class FlightEntity implements Comparable<FlightEntity> {
 
     @Override
     public String toString() {
-        return String.format
-                ("FlightEntity{id='%s', departureDate=%s, destination='%s', seatAvailability=%s}",
-                        id, departureDate, destination, seatAvailability);
+        return String.format("FlightEntity{id=%d, departureDate=%s, destination='%s', from='%s', totalSeats=%d, availabilitySeats=%d}", id, departureDate, destination, from, totalSeats, availabilitySeats);
     }
 
     @Override

@@ -5,5 +5,4 @@ import az.edu.turing.domain.entity.PassengerEntity;
 public abstract class PassengerDao
         implements Dao<PassengerEntity, Long> {
 
-    public abstract boolean existByLogin(String login);
 }

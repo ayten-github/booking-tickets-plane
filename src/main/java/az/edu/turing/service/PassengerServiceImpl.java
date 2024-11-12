@@ -26,10 +26,9 @@ public class PassengerServiceImpl implements PassengerService {
             throw new AlreadyExistsException("login already exists");
         }
         return passengerMapper.toDto(passengerDao.save(new PassengerEntity(
-                request.getLogin(),
                 request.getFirstName(),
-                request.getLastName(),
-                request.getPassword()
+                request.getLastName()
+
         )));
     }
 
