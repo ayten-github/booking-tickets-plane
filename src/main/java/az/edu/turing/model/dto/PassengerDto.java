@@ -1,18 +1,16 @@
 package az.edu.turing.model.dto;
 
+import az.edu.turing.domain.entity.PassengerEntity;
+
 public class PassengerDto {
     private long id;
     private String firstName;
     private String lastName;
-    private String login;
-    private String password;
 
-    public PassengerDto(long id, String firstName, String lastName, String login, String password) {
+    public PassengerDto(long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.login = login;
-        this.password = password;
     }
 
     public long getId() {
@@ -39,24 +37,8 @@ public class PassengerDto {
         this.lastName = lastName;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public String toString() {
-        return String.format("PassengerDto{id=%d, firstName='%s', lastName='%s', login='%s'}", id, firstName, lastName, login);
+        return String.format("PassengerDto{id=%d, firstName='%s', lastName='%s", id, firstName, lastName);
     }
 }

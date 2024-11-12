@@ -1,16 +1,16 @@
 package az.edu.turing.model.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FlightDto {
 
     private long id;
-    private Date departureDate;
+    private LocalDateTime departureDate;
     private String destination;
     private List<Boolean> seatAvailability;
 
-    public FlightDto(long id, Date departureDate, String destination, List<Boolean> seatAvailability) {
+    public FlightDto(long id, LocalDateTime departureDate, String destination, int seatAvailability) {
         this.id = id;
         this.departureDate = departureDate;
         this.destination = destination;
@@ -25,11 +25,11 @@ public class FlightDto {
         this.id = id;
     }
 
-    public Date getDepartureDate() {
+    public LocalDateTime getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
     }
 

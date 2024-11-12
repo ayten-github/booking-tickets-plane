@@ -12,12 +12,10 @@ public class PassengerMapper implements EntityMapper<PassengerEntity, PassengerD
 
     @Override
     public PassengerDto toDto(PassengerEntity passengerEntity) {
-        return  new PassengerDto(
+        return new PassengerDto(
                 passengerEntity.getId(),
                 passengerEntity.getFirstName(),
-                passengerEntity.getLastName(),
-                passengerEntity.getLogin(),
-                passengerEntity.getPassword()
+                passengerEntity.getLastName()
         );
     }
 }

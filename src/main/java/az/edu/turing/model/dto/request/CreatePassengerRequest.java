@@ -5,17 +5,11 @@ public class CreatePassengerRequest {
     private final String firstName;
     private final String lastName;
     private final String login;
-    private final String password;
 
-//    public CreatePassengerRequest(String firstName, String login, String password) {
-//        this(firstName, login, null, password);
-//    }
-
-    public CreatePassengerRequest(String firstName, String lastName, String login, String password) {
+    public CreatePassengerRequest(String firstName, String lastName, String login) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
-        this.password = password;
     }
 
     public String getLogin() {
@@ -28,9 +22,5 @@ public class CreatePassengerRequest {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }
