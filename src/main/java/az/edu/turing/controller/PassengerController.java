@@ -19,5 +19,4 @@ public class PassengerController {
     public PassengerDto findById(long id){
         return passengerService.findById(id);
     }
-
 }
