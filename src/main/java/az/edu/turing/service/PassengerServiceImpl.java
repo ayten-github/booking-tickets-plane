@@ -38,7 +38,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerDto findById(long id) {
         return passengerDao.getById(id)
                 .map(passengerMapper::toDto)
-                .orElseThrow(() -> new NotFoundException("login" + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("id " + id + " not found"));
 
     }
 

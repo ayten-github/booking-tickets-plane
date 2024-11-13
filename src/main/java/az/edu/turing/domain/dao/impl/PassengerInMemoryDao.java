@@ -13,7 +13,7 @@ public class PassengerInMemoryDao extends PassengerDao {
 
     @Override
     public Optional<PassengerEntity> getById(Long id) {
-        return PASSENGERS.equals(id) ? Optional.of(PASSENGERS.get(id)) : Optional.empty();
+        return Optional.ofNullable(PASSENGERS.get(id));
     }
 
     @Override
