@@ -3,6 +3,7 @@ package az.edu.turing.service;
 import az.edu.turing.domain.dao.BookingDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.exception.AlreadyExistsException;
+import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.NotFoundException;
 import az.edu.turing.mapper.BookingMapper;
 import az.edu.turing.model.dto.BookingDto;
@@ -18,7 +19,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto createBooking(BookingDto bookingDto) {
+    public BookingDto createBooking(BookingDto bookingDto) throws DatabaseException {
         if (bookingDao.existById(bookingDto.getId())) {
             throw new AlreadyExistsException("Booking already exists with id: " + bookingDto.getId());
         }
@@ -27,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto findBookingById(long id) {
+    public BookingDto findBookingById(long id) throws DatabaseException {
         return bookingDao.getById(id)
                 .map(bookingMapper::toDto)
                 .orElseThrow(() -> new NotFoundException("Booking with id " + id + " not found"));

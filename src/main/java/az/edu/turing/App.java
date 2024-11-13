@@ -3,13 +3,14 @@ package az.edu.turing;
 import az.edu.turing.controller.PassengerController;
 import az.edu.turing.domain.dao.PassengerDao;
 import az.edu.turing.domain.dao.impl.PassengerInMemoryDao;
+import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
 import az.edu.turing.service.PassengerService;
 import az.edu.turing.service.PassengerServiceImpl;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DatabaseException {
 //        PassengerEntity passengerEntity
 //                = new PassengerEntity("Cavad","Nazirli","javadnazirli123","21321");
 //        PassengerFileDao passengerFileDao = new PassengerFileDao();
@@ -32,7 +33,7 @@ public class App {
         run(passengerController);
     }
 
-    private static void run(PassengerController passengerController) {
+    private static void run(PassengerController passengerController) throws DatabaseException {
         System.out.println(passengerController.create(new CreatePassengerRequest(1, "Gurbanli", "joshgun123")));
         System.out.println(passengerController.findById(1));
     }
