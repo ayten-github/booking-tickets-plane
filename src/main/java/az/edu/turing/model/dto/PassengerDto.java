@@ -1,7 +1,5 @@
 package az.edu.turing.model.dto;
 
-import az.edu.turing.domain.entity.PassengerEntity;
-
 public class PassengerDto {
     private long id;
     private String firstName;

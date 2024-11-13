@@ -3,7 +3,7 @@ package az.edu.turing.domain.dao.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import az.edu.turing.domain.dao.BookingDao;
-import az.edu.turing.domain.entity.BookingEntity;
+import az.edu.turing.domain.entities.BookingEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BookingFileDao extends BookingDao {
 
-    private final String FILE_PATH = "src/main/java/org/example/files/Booking_records.json";
+    private final String FILE_PATH = "src/main/java/az/edu/turing/files/Booking_records.json";
     private final AtomicLong idGenerator = new AtomicLong(1);
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -95,5 +95,11 @@ public class BookingFileDao extends BookingDao {
         } catch (IOException e) {
             System.err.println("Error saving all BookingEntities: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean existById(long id) {
+        return getById(id).isPresent();
+
     }
 }

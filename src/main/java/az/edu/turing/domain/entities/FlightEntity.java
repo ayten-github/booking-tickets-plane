@@ -1,8 +1,6 @@
-package az.edu.turing.domain.entity;
+package az.edu.turing.domain.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 public class FlightEntity implements Comparable<FlightEntity> {

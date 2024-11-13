@@ -1,7 +1,7 @@
 package az.edu.turing.model.dto;
 
-import az.edu.turing.domain.entity.FlightEntity;
-import az.edu.turing.domain.entity.PassengerEntity;
+import az.edu.turing.domain.entities.FlightEntity;
+import az.edu.turing.domain.entities.PassengerEntity;
 
 import java.util.List;
 

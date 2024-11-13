@@ -3,7 +3,7 @@ package az.edu.turing.domain.dao.impl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import az.edu.turing.domain.dao.FlightDao;
-import az.edu.turing.domain.entity.FlightEntity;
+import az.edu.turing.domain.entities.FlightEntity;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class FlightFileDao extends FlightDao {
 
-    private final String FILE_PATH = "src/main/java/org/example/files/Flight_records.json";
+    private final String FILE_PATH = "src/main/java/az/edu/turing/files/Flight_records.json";
     private final AtomicLong idGenerator = new AtomicLong(0);
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -34,7 +34,7 @@ public class FlightFileDao extends FlightDao {
 
         if (file.exists()) {
             try {
-                flights = mapper.readValue(file, new TypeReference<Collection<FlightEntity>>() {});
+                flights = mapper.readValue(file, new TypeReference<>() {});
             } catch (IOException e) {
                 System.err.println("Error reading FlightEntity from file: " + e.getMessage());
             }
@@ -95,5 +95,11 @@ public class FlightFileDao extends FlightDao {
         } catch (IOException e) {
             System.err.println("Error saving all FlightEntities: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean existById(long id) {
+        Collection<FlightEntity> flights = getAll();
+        return flights.stream().anyMatch(flight -> flight.getId().equals(id));
     }
 }

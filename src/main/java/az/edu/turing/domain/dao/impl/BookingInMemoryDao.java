@@ -1,7 +1,7 @@
 package az.edu.turing.domain.dao.impl;
 
 import az.edu.turing.domain.dao.BookingDao;
-import az.edu.turing.domain.entity.BookingEntity;
+import az.edu.turing.domain.entities.BookingEntity;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,10 +17,9 @@ public class BookingInMemoryDao extends BookingDao {
 
     @Override
     public Optional<BookingEntity> getById(Long id) {
-        return Optional.ofNullable(BOOKINGS.stream()
+        return BOOKINGS.stream()
                 .filter(booking -> booking.getId().equals(id))
-                .findFirst()
-                .orElse(null));
+                .findFirst();
     }
 
     @Override
@@ -53,6 +52,11 @@ public class BookingInMemoryDao extends BookingDao {
 
     @Override
     public void delete(Long id) {
-        BOOKINGS.removeIf(booking -> booking.getId().equals(id.intValue()));
+        BOOKINGS.removeIf(booking -> false);
+    }
+
+    @Override
+    public boolean existById(long id) {
+        return BOOKINGS.stream().anyMatch(booking -> booking.getId().equals(id));
     }
 }

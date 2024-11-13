@@ -1,7 +1,7 @@
 package az.edu.turing.domain.dao.impl;
 
 import az.edu.turing.domain.dao.FlightDao;
-import az.edu.turing.domain.entity.FlightEntity;
+import az.edu.turing.domain.entities.FlightEntity;
 
 
 import java.util.HashSet;
@@ -23,9 +23,9 @@ public class FlightInMemoryDao extends FlightDao {
 
     @Override
     public Optional<FlightEntity> getById(Long id) {
-       return Optional.ofNullable(FLIGHTS.stream()
+       return FLIGHTS.stream()
                .filter(flightEntity -> flightEntity.getId().equals(id))
-               .findFirst().orElse(null));
+               .findFirst();
     }
 
     @Override
@@ -49,5 +49,10 @@ public class FlightInMemoryDao extends FlightDao {
     @Override
     public void delete(Long id) {
         FLIGHTS.removeIf(flightEntity -> flightEntity.getId().equals(id));
+    }
+
+    @Override
+    public boolean existById(long id) {
+        return FLIGHTS.stream().anyMatch(flightEntity -> flightEntity.getId() == id);
     }
 }
