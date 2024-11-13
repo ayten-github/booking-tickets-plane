@@ -35,7 +35,7 @@ public class PassengerFileDao extends PassengerDao {
 
         if (file.exists()) {
             try {
-                passengers = mapper.readValue(file, new TypeReference<List<PassengerEntity>>() {});
+                passengers = mapper.readValue(file, new TypeReference<>() {});
             } catch (IOException e) {
                 System.err.println("Error reading PassengerEntity from file: " + e.getMessage());
             }

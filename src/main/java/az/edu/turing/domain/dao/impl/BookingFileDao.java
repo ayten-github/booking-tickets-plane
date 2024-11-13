@@ -34,7 +34,7 @@ public class BookingFileDao extends BookingDao {
 
         if (file.exists()) {
             try {
-                bookings = mapper.readValue(file, new TypeReference<Collection<BookingEntity>>() {});
+                bookings = mapper.readValue(file, new TypeReference<>() {});
             } catch (IOException e) {
                 System.err.println("Error reading BookingEntity from file: " + e.getMessage());
             }
