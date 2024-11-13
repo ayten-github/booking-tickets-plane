@@ -52,7 +52,7 @@ public class BookingInMemoryDao extends BookingDao {
 
     @Override
     public void delete(Long id) {
-        BOOKINGS.removeIf(booking -> false);
+        BOOKINGS.removeIf(booking -> booking.getId().equals(id));
     }
 
     @Override
