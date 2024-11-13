@@ -18,18 +18,17 @@ public class PassengerServiceImpl implements PassengerService {
         this.passengerMapper = passengerMapper;
     }
 
+//    @Override
+//    public PassengerDto createPassenger(CreatePassengerRequest request) {
+//        final long id = request.getId();
+//
+//        if ()
+//
+//    }
+
     @Override
     public PassengerDto createPassenger(CreatePassengerRequest request) {
-        final String login = request.getLogin();
-
-        if(passengerDao.existByLogin(login)) {
-            throw new AlreadyExistsException("login already exists");
-        }
-        return passengerMapper.toDto(passengerDao.save(new PassengerEntity(
-                request.getFirstName(),
-                request.getLastName()
-
-        )));
+        return null;
     }
 
     @Override
@@ -38,5 +37,10 @@ public class PassengerServiceImpl implements PassengerService {
                 .map(passengerMapper::toDto)
                 .orElseThrow(() -> new NotFoundException("login" + id + " not found"));
 
+    }
+
+    @Override
+    public boolean existById(long id) {
+        return false;
     }
 }

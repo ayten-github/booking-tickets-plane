@@ -17,7 +17,9 @@ public class FlightMapper implements EntityMapper<FlightEntity, FlightDto> {
                 flightEntity.getId(),
                 flightEntity.getDepartureDate(),
                 flightEntity.getDestination(),
-                flightEntity.getAvailableSeats()
+                flightEntity.getFrom(),
+                flightEntity.getTotalSeats(),
+                flightEntity.getAvailabilitySeats()
         );
     }
 

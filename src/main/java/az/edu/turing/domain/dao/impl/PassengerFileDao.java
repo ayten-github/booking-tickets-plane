@@ -99,8 +99,5 @@ public class PassengerFileDao extends PassengerDao {
         }
     }
 
-    @Override
-    public boolean existByLogin(String login) {
-        return false;
-    }
+
 }

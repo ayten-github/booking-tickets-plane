@@ -8,4 +8,5 @@ public interface PassengerService {
     PassengerDto createPassenger(CreatePassengerRequest request);
 
     PassengerDto findById(long id);
+    boolean existById(long id);
 }

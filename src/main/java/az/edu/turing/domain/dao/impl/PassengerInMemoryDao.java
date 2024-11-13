@@ -39,4 +39,8 @@ public class PassengerInMemoryDao extends PassengerDao {
         PASSENGERS.remove(id);
     }
 
+    @Override
+    public boolean existById(long id) {
+        return PASSENGERS.containsKey(id);
+    }
 }

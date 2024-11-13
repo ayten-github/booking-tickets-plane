@@ -39,7 +39,7 @@ public class FlightInMemoryDao extends FlightDao {
 
         if (flightOptional.isPresent()) {
             FlightEntity flight = flightOptional.get();
-            flight.setSeatAvailability(flightEntity.getSeatAvailability());
+            flight.setAvailabilitySeats(flightEntity.getAvailabilitySeats());
             return flight;
         }
 

@@ -33,7 +33,7 @@ public class App {
     }
 
     private static void run(PassengerController passengerController) {
-        System.out.println(passengerController.create(new CreatePassengerRequest("Joshgun", "Gurbanli", "joshgun123")));
+        System.out.println(passengerController.create(new CreatePassengerRequest(1, "Gurbanli", "joshgun123")));
         System.out.println(passengerController.findById(1));
     }
 }

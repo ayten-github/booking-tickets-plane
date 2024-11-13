@@ -8,13 +8,17 @@ public class FlightDto {
     private long id;
     private LocalDateTime departureDate;
     private String destination;
-    private List<Boolean> seatAvailability;
+    private String from;
+    private int totalSeats;
+    private int availabilitySeats;
 
-    public FlightDto(long id, LocalDateTime departureDate, String destination, int seatAvailability) {
+    public FlightDto(long id, LocalDateTime departureDate, String destination, String from, int totalSeats, int availabilitySeats) {
         this.id = id;
         this.departureDate = departureDate;
         this.destination = destination;
-        this.seatAvailability = seatAvailability;
+        this.from = from;
+        this.totalSeats = totalSeats;
+        this.availabilitySeats = availabilitySeats;
     }
 
     public long getId() {
@@ -41,11 +45,27 @@ public class FlightDto {
         this.destination = destination;
     }
 
-    public List<Boolean> getSeatAvailability() {
-        return seatAvailability;
+    public String getFrom() {
+        return from;
     }
 
-    public void setSeatAvailability(List<Boolean> seatAvailability) {
-        this.seatAvailability = seatAvailability;
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public int getTotalSeats() {
+        return totalSeats;
+    }
+
+    public void setTotalSeats(int totalSeats) {
+        this.totalSeats = totalSeats;
+    }
+
+    public int getAvailabilitySeats() {
+        return availabilitySeats;
+    }
+
+    public void setAvailabilitySeats(int availabilitySeats) {
+        this.availabilitySeats = availabilitySeats;
     }
 }
