@@ -1,14 +1,23 @@
 package az.edu.turing.mapper;
 
-import az.edu.turing.domain.dao.FlightDao;
-import az.edu.turing.domain.entity.FlightEntity;
+import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.model.dto.FlightDto;
 
 public class FlightMapper implements EntityMapper<FlightEntity, FlightDto> {
 
     @Override
     public FlightEntity toEntity(FlightDto flightDto) {
-        return null;
+        if (flightDto == null) {
+            return null;
+        }
+        return new FlightEntity(
+                flightDto.getId(),
+                flightDto.getDepartureDate(),
+                flightDto.getDestination(),
+                flightDto.getFrom(),
+                flightDto.getTotalSeats(),
+                flightDto.getAvailabilitySeats()
+        );
     }
 
     @Override

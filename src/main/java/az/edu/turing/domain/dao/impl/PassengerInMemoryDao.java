@@ -1,7 +1,7 @@
 package az.edu.turing.domain.dao.impl;
 
 import az.edu.turing.domain.dao.PassengerDao;
-import az.edu.turing.domain.entity.PassengerEntity;
+import az.edu.turing.domain.entities.PassengerEntity;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
