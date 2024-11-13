@@ -3,6 +3,7 @@ package az.edu.turing.service;
 import az.edu.turing.domain.dao.PassengerDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.AlreadyExistsException;
+import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.NotFoundException;
 import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.PassengerDto;
@@ -19,7 +20,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public PassengerDto createPassenger(CreatePassengerRequest request) {
+    public PassengerDto createPassenger(CreatePassengerRequest request) throws DatabaseException {
         final long id = request.getId();
         if (passengerDao.existById(id)) {
             throw new AlreadyExistsException("Student already exists with pin: " + id);
@@ -35,7 +36,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public PassengerDto findById(long id) {
+    public PassengerDto findById(long id) throws DatabaseException {
         return passengerDao.getById(id)
                 .map(passengerMapper::toDto)
                 .orElseThrow(() -> new NotFoundException("id " + id + " not found"));
@@ -43,7 +44,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public boolean existById(long id) {
+    public boolean existById(long id) throws DatabaseException {
         return passengerDao.existById(id);
     }
 }

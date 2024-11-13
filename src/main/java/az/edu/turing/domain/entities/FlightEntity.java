@@ -8,9 +8,13 @@ public class FlightEntity implements Comparable<FlightEntity> {
     private Long id;
     private LocalDateTime departureDate;
     private String destination;
-    private String from;
+    private String origin;
     private int totalSeats;
     private int availabilitySeats;
+
+    public FlightEntity() {
+
+    }
 
     public FlightEntity(LocalDateTime departureDate, String destination, String from, int totalSeats, int availabilitySeats) {
         this(null, departureDate, destination, from, totalSeats, availabilitySeats);
@@ -20,9 +24,13 @@ public class FlightEntity implements Comparable<FlightEntity> {
         this.id = id;
         this.departureDate = departureDate;
         this.destination = destination;
-        this.from = from;
+        this.origin = from;
         this.totalSeats = totalSeats;
         this.availabilitySeats = availabilitySeats;
+    }
+
+    public FlightEntity(long flightId) {
+        this.id = flightId;
     }
 
     public Long getId() {
@@ -41,12 +49,12 @@ public class FlightEntity implements Comparable<FlightEntity> {
         this.departureDate = departureDate;
     }
 
-    public String getFrom() {
-        return from;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setOrigin(String from) {
+        this.origin = from;
     }
 
     public int getTotalSeats() {
@@ -90,7 +98,7 @@ public class FlightEntity implements Comparable<FlightEntity> {
 
     @Override
     public String toString() {
-        return String.format("FlightEntity{id=%d, departureDate=%s, destination='%s', from='%s', totalSeats=%d, availabilitySeats=%d}", id, departureDate, destination, from, totalSeats, availabilitySeats);
+        return String.format("FlightEntity{id=%d, departureDate=%s, destination='%s', from='%s', totalSeats=%d, availabilitySeats=%d}", id, departureDate, destination, origin, totalSeats, availabilitySeats);
     }
 
     @Override

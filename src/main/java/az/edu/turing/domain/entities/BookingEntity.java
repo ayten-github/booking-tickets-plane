@@ -19,6 +19,10 @@ public class BookingEntity {
         this.isCancelled = isCancelled;
     }
 
+    public BookingEntity() {
+
+    }
+
     public Long getId() {
         return id;
     }
