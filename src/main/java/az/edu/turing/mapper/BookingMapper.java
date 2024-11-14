@@ -13,7 +13,6 @@ public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
         return new BookingEntity(
                 bookingDto.getId(),
                 bookingDto.getFlightId(),
-                bookingDto.getPassengerName(),
                 bookingDto.getPassengers(),
                 bookingDto.isCancelled()
 
@@ -25,7 +24,6 @@ public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
         return new BookingDto(
                 bookingEntity.getId(),
                 bookingEntity.getFlightId(),
-                bookingEntity.getPassengerName(),
                 bookingEntity.getPassengers(),
                 bookingEntity.isCancelled()
         );
