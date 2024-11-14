@@ -1,6 +1,6 @@
 package az.edu.turing.domain.dao.impl;
 
-import az.edu.turing.conflig.DataSourceConfig;
+import az.edu.turing.config.DataSourceConfig;
 import az.edu.turing.domain.dao.BookingDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.domain.entities.FlightEntity;
@@ -179,4 +179,5 @@ public class BookingDatabaseDao extends BookingDao {
         }
         return passengers;
     }
+
 }

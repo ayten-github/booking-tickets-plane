@@ -1,6 +1,6 @@
 package az.edu.turing.domain.dao.impl;
 
-import az.edu.turing.conflig.DataSourceConfig;
+import az.edu.turing.config.DataSourceConfig;
 import az.edu.turing.domain.dao.FlightDao;
 import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.exception.DatabaseException;
