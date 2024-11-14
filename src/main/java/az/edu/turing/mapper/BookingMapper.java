@@ -1,6 +1,7 @@
 package az.edu.turing.mapper;
 
 import az.edu.turing.domain.entities.BookingEntity;
+import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.model.dto.BookingDto;
 
 public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
@@ -10,9 +11,13 @@ public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
         if (bookingDto == null) {
             return null;
         }
+
+        FlightEntity flightEntity = new FlightEntity();
+        flightEntity.setId(bookingDto.getFlightId());
+
         return new BookingEntity(
                 bookingDto.getId(),
-                bookingDto.getFlightId(),
+                flightEntity,
                 bookingDto.getPassengers(),
                 bookingDto.isCancelled()
 

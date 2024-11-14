@@ -16,7 +16,6 @@ public class BookingDatabaseDao extends BookingDao {
             "CREATE TABLE IF NOT EXISTS bookings (" +
                     "id BIGSERIAL PRIMARY KEY, " +
                     "flight_id BIGINT REFERENCES flights(id) NOT NULL, " +
-                    "passenger_name VARCHAR(255) NOT NULL, " +
                     "is_cancelled BOOLEAN NOT NULL" +
                     ");";
 
@@ -81,12 +80,12 @@ public class BookingDatabaseDao extends BookingDao {
 
     @Override
     public BookingEntity save(BookingEntity entity) throws DatabaseException {
-        String sql = "INSERT INTO bookings (flight_id, passenger_name, is_cancelled) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO bookings (flight_id, is_cancelled) VALUES (?, ?)";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            statement.setLong(1, entity.getFlightId().getId());
+            statement.setLong(1, entity.getFlightId());
             statement.setBoolean(2, entity.isCancelled());
 
             statement.executeUpdate();
@@ -103,12 +102,12 @@ public class BookingDatabaseDao extends BookingDao {
 
     @Override
     public BookingEntity update(BookingEntity entity) throws DatabaseException {
-        String sql = "UPDATE bookings SET flight_id = ?, passenger_name = ?, is_cancelled = ? WHERE id = ?";
+        String sql = "UPDATE bookings SET flight_id = ?, is_cancelled = ? WHERE id = ?";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setLong(1, entity.getFlightId().getId());
+            preparedStatement.setLong(1, entity.getFlightId());
             preparedStatement.setBoolean(2, entity.isCancelled());
             preparedStatement.setLong(3, entity.getId());
 

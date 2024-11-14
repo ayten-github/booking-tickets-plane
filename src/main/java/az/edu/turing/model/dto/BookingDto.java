@@ -8,11 +8,11 @@ import java.util.List;
 public class BookingDto {
 
     private long id;
-    private FlightEntity flightId;
+    private Long flightId;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
-    public BookingDto(long id, FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingDto(long id, Long flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
         this.passengers = passengers;
@@ -27,11 +27,11 @@ public class BookingDto {
         this.id = id;
     }
 
-    public FlightEntity getFlightId() {
+    public Long getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(FlightEntity flightId) {
+    public void setFlightId(Long flightId) {
         this.flightId = flightId;
     }
 
