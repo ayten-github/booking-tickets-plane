@@ -6,56 +6,96 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public class FlightMemoryTest {
+
 
     private FlightInMemoryDao flightDao;
 
     @BeforeEach
     public void setUp() {
-
         flightDao = new FlightInMemoryDao();
     }
 
     @Test
-    public void testSaveAndGetById() {
-
+    public void testSaveNewFlight() {
         FlightEntity flight = new FlightEntity();
         flight.setAvailabilitySeats(100);
-        flight = flightDao.save(flight);
 
-        Optional<FlightEntity> retrievedFlight = flightDao.getById(flight.getId());
-        assertTrue(retrievedFlight.isPresent());
-        assertEquals(100, retrievedFlight.get().getAvailabilitySeats());
+        FlightEntity savedFlight = flightDao.save(flight);
+
+        assertNotNull(savedFlight.getId());
+        assertEquals(100, savedFlight.getAvailabilitySeats());
+        assertTrue(flightDao.existById(savedFlight.getId()));
     }
 
     @Test
-    public void testGetByIdReturnsEmptyWhenNotFound() {
+    public void testGetById() {
+        FlightEntity flight = new FlightEntity();
+        flight.setAvailabilitySeats(100);
+        FlightEntity savedFlight = flightDao.save(flight);
 
-        Optional<FlightEntity> retrievedFlight = flightDao.getById(999L);
-        assertFalse(retrievedFlight.isPresent());
+        Optional<FlightEntity> foundFlight = flightDao.getById(savedFlight.getId());
+
+        assertTrue(foundFlight.isPresent());
+        assertEquals(savedFlight.getId(), foundFlight.get().getId());
+        assertEquals(100, foundFlight.get().getAvailabilitySeats());
     }
 
     @Test
-    public void testUpdateFlight() {
+    public void testGetAll() {
+        FlightEntity flight1 = new FlightEntity();
+        flight1.setAvailabilitySeats(100);
+        flightDao.save(flight1);
 
+        FlightEntity flight2 = new FlightEntity();
+        flight2.setAvailabilitySeats(200);
+        flightDao.save(flight2);
+
+        Set<FlightEntity> allFlights = flightDao.getAll();
+
+        assertEquals(2, allFlights.size());
+    }
+
+    @Test
+    public void testUpdateExistingFlight() {
         FlightEntity flight = new FlightEntity();
         flight.setAvailabilitySeats(100);
-        flight = flightDao.save(flight);
+        FlightEntity savedFlight = flightDao.save(flight);
 
-        flight.setAvailabilitySeats(80);
-        FlightEntity updatedFlight = flightDao.update(flight);
+        savedFlight.setAvailabilitySeats(50);
+        FlightEntity updatedFlight = flightDao.update(savedFlight);
 
         assertNotNull(updatedFlight);
-        assertEquals(80, updatedFlight.getAvailabilitySeats());
+        assertEquals(50, updatedFlight.getAvailabilitySeats());
+    }
 
-        Optional<FlightEntity> retrievedFlight = flightDao.getById(flight.getId());
-        assertTrue(retrievedFlight.isPresent());
+    @Test
+    public void testDelete() {
+        FlightEntity flight = new FlightEntity();
+        flight.setAvailabilitySeats(100);
+        FlightEntity savedFlight = flightDao.save(flight);
 
+        flightDao.delete(savedFlight.getId());
+
+        assertFalse(flightDao.existById(savedFlight.getId()));
+    }
+
+    @Test
+    public void testExistById() {
+        FlightEntity flight = new FlightEntity();
+        flight.setAvailabilitySeats(100);
+        FlightEntity savedFlight = flightDao.save(flight);
+
+        assertTrue(flightDao.existById(savedFlight.getId()));
+        assertFalse(flightDao.existById(999L));
     }
 }
+
