@@ -13,7 +13,6 @@ public class BookingEntity {
     public BookingEntity(Long id, FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
-
         this.passengers = passengers;
         this.isCancelled = isCancelled;
     }
@@ -31,8 +30,8 @@ public class BookingEntity {
     }
 
 
-    public FlightEntity getFlightId() {
-        return flightId;
+    public Long getFlightId() {
+        return flightId != null ? flightId.getId() : null;
     }
 
     public void setFlightId(FlightEntity flightId) {
