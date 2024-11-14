@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PassengerMemoryTest {
 
+
     private PassengerInMemoryDao passengerDao;
 
     @BeforeEach
@@ -23,68 +24,77 @@ public class PassengerMemoryTest {
     }
 
     @Test
-    public void testSave() {
-        PassengerEntity passenger = new PassengerEntity(1L, "John", "Doe");
+    public void testSaveNewPassenger() {
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFirstName("John");
+
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertNotNull(savedPassenger.getId(), "Saved passenger should have an ID");
-        assertEquals(1L, savedPassenger.getId(), "Saved passenger should have an ID");
-        assertEquals("John", savedPassenger.getFirstName(), "Passenger name should match");
-        assertEquals("Doe", savedPassenger.getLastName(), "Passenger last name should match");
+        assertNotNull(savedPassenger.getId());
+        assertEquals("John", savedPassenger.getFirstName());
+        assertTrue(passengerDao.existById(savedPassenger.getId()));
     }
 
     @Test
     public void testGetById() {
-        PassengerEntity passenger = new PassengerEntity(1L, "Jane", "Doe");
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFirstName("Jane");
         PassengerEntity savedPassenger = passengerDao.save(passenger);
-        Long id = savedPassenger.getId();
 
-        Optional<PassengerEntity> retrievedPassenger = passengerDao.getById(id);
-        assertTrue(retrievedPassenger.isPresent(), "Passenger should be found");
-        assertEquals(1L, retrievedPassenger.get().getId(), "Passenger should have an ID");
-        assertEquals("Jane", retrievedPassenger.get().getFirstName(), "Retrieved passenger name should match");
-        assertEquals("Doe",retrievedPassenger.get().getLastName(), "Retrieved passenger last name should match");
+        Optional<PassengerEntity> foundPassenger = passengerDao.getById(savedPassenger.getId());
+
+        assertTrue(foundPassenger.isPresent());
+        assertEquals(savedPassenger.getId(), foundPassenger.get().getId());
+        assertEquals("Jane", foundPassenger.get().getFirstName());
     }
 
     @Test
     public void testGetAll() {
+        PassengerEntity passenger1 = new PassengerEntity();
+        passenger1.setFirstName("Alice");
+        passengerDao.save(passenger1);
 
-        passengerDao.save(new PassengerEntity(1L, "Jane", "Doe"));
-        passengerDao.save(new PassengerEntity(2L, "Bob", "Marli"));
+        PassengerEntity passenger2 = new PassengerEntity();
+        passenger2.setFirstName("Bob");
+        passengerDao.save(passenger2);
 
-        Collection<PassengerEntity> passengers = passengerDao.getAll();
-        assertEquals(2, passengers.size(), "There should be 2 passengers in the collection");
+        Collection<PassengerEntity> allPassengers = passengerDao.getAll();
+
+        assertEquals(2, allPassengers.size());
     }
 
     @Test
-    public void testUpdate() {
-        PassengerEntity passenger = new PassengerEntity(1L, "Jane", "Doe");
+    public void testUpdateExistingPassenger() {
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFirstName("Charlie");
         PassengerEntity savedPassenger = passengerDao.save(passenger);
-        savedPassenger.setFirstName("Charlie Updated");
 
+        savedPassenger.setFirstName("Charlie Brown");
         PassengerEntity updatedPassenger = passengerDao.update(savedPassenger);
-        assertEquals("Charlie Updated", updatedPassenger.getFirstName(), "Passenger name should be updated");
+
+        assertNotNull(updatedPassenger);
+        assertEquals("Charlie Brown", updatedPassenger.getFirstName());
     }
 
     @Test
     public void testDelete() {
-        PassengerEntity passenger = new PassengerEntity(1L, "Jane", "Doe");
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFirstName("David");
         PassengerEntity savedPassenger = passengerDao.save(passenger);
-        Long id = savedPassenger.getId();
 
-        passengerDao.delete(id);
-        Optional<PassengerEntity> deletedPassenger = passengerDao.getById(id);
-        assertFalse(deletedPassenger.isPresent(), "Passenger should be deleted");
+        passengerDao.delete(savedPassenger.getId());
+
+        assertFalse(passengerDao.existById(savedPassenger.getId()));
     }
 
     @Test
     public void testExistById() {
-        PassengerEntity passenger = new PassengerEntity(1L, "Jane", "Doe");
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFirstName("Eve");
         PassengerEntity savedPassenger = passengerDao.save(passenger);
-        Long id = savedPassenger.getId();
 
-        assertTrue(passengerDao.existById(id), "Passenger should exist by ID");
-        passengerDao.delete(id);
-        assertFalse(passengerDao.existById(id), "Passenger should not exist after deletion");
+        assertTrue(passengerDao.existById(savedPassenger.getId()));
+        assertFalse(passengerDao.existById(999L));
     }
 }
+
