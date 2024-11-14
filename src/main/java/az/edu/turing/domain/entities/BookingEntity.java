@@ -7,14 +7,13 @@ public class BookingEntity {
 
     private Long id;
     private FlightEntity flightId;
-    private String passengerName;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
-    public BookingEntity(Long id, FlightEntity flightId, String passengerName, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingEntity(Long id, FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
-        this.passengerName = passengerName;
+
         this.passengers = passengers;
         this.isCancelled = isCancelled;
     }
@@ -38,14 +37,6 @@ public class BookingEntity {
 
     public void setFlightId(FlightEntity flightId) {
         this.flightId = flightId;
-    }
-
-    public String getPassengerName() {
-        return passengerName;
-    }
-
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
     }
 
     public List<PassengerEntity> getPassengers() {
@@ -79,8 +70,8 @@ public class BookingEntity {
 
     @Override
     public String toString() {
-        return String.format("BookingEntity{id=%d, flightId=%d, passengerName='%s', passengers=%s, isCancelled=%s}",
-                id, flightId, passengerName, passengers, isCancelled);
+        return String.format("BookingEntity{id=%d, flightId=%d, passengers=%s, isCancelled=%s}",
+                id, flightId, passengers, isCancelled);
     }
 
 

@@ -42,7 +42,6 @@ public class BookingDatabaseDao extends BookingDao {
                 BookingEntity booking = new BookingEntity(
                         resultSet.getLong("id"),
                         new FlightEntity(resultSet.getLong("flight_id")),
-                        resultSet.getString("passenger_name"),
                         getPassengersByBookingId(resultSet.getLong("id")),
                         resultSet.getBoolean("is_cancelled")
                 );
@@ -69,7 +68,6 @@ public class BookingDatabaseDao extends BookingDao {
                 BookingEntity booking = new BookingEntity(
                         resultSet.getLong("id"),
                         new FlightEntity(resultSet.getLong("flight_id")),
-                        resultSet.getString("passenger_name"),
                         getPassengersByBookingId(resultSet.getLong("id")),
                         resultSet.getBoolean("is_cancelled")
                 );
@@ -89,8 +87,7 @@ public class BookingDatabaseDao extends BookingDao {
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setLong(1, entity.getFlightId().getId());
-            statement.setString(2, entity.getPassengerName());
-            statement.setBoolean(3, entity.isCancelled());
+            statement.setBoolean(2, entity.isCancelled());
 
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
@@ -112,9 +109,8 @@ public class BookingDatabaseDao extends BookingDao {
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setLong(1, entity.getFlightId().getId());
-            preparedStatement.setString(2, entity.getPassengerName());
-            preparedStatement.setBoolean(3, entity.isCancelled());
-            preparedStatement.setLong(4, entity.getId());
+            preparedStatement.setBoolean(2, entity.isCancelled());
+            preparedStatement.setLong(3, entity.getId());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

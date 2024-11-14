@@ -9,14 +9,12 @@ public class BookingDto {
 
     private long id;
     private FlightEntity flightId;
-    private String passengerName;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
-    public BookingDto(long id, FlightEntity flightId, String passengerName, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingDto(long id, FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.flightId = flightId;
-        this.passengerName = passengerName;
         this.passengers = passengers;
         this.isCancelled = isCancelled;
     }
@@ -35,14 +33,6 @@ public class BookingDto {
 
     public void setFlightId(FlightEntity flightId) {
         this.flightId = flightId;
-    }
-
-    public String getPassengerName() {
-        return passengerName;
-    }
-
-    public void setPassengerName(String passengerName) {
-        this.passengerName = passengerName;
     }
 
     public List<PassengerEntity> getPassengers() {
