@@ -1,15 +1,20 @@
 package az.edu.turing;
 
 import az.edu.turing.controller.PassengerController;
+import az.edu.turing.domain.dao.FlightDao;
 import az.edu.turing.domain.dao.PassengerDao;
+import az.edu.turing.domain.dao.impl.FlightInMemoryDao;
 import az.edu.turing.domain.dao.impl.PassengerFileDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.InvalidOptionException;
+import az.edu.turing.mapper.FlightMapper;
 import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
+import az.edu.turing.service.FlightService;
+import az.edu.turing.service.FlightServiceImpl;
 import az.edu.turing.service.PassengerService;
 import az.edu.turing.service.PassengerServiceImpl;
 
@@ -17,6 +22,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Application {
+    private FlightDao flightDao=
+            new FlightInMemoryDao();
+    FlightMapper flightMapper =new FlightMapper();
+    FlightService flightService=new FlightServiceImpl(flightDao,flightMapper);
+
+
 
     private static Map<Integer, FlightEntity> flights = new HashMap<>();
     private static Map<Integer, BookingEntity> bookings = new HashMap<>();
@@ -135,8 +146,19 @@ public class Application {
     }
 
     public static void showOnlineBoard() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime twentyFourHoursLater = now.plusHours(24);
+
         System.out.println("\nOnline-board - Flights from Kiev in the next 24 hours:");
 
+        for (FlightEntity flight : flights.values()) {
+            if (flight.getOrigin().equals("Kiev") &&
+                    flight.getDepartureDate().isAfter(now) &&
+                    flight.getDepartureDate().isBefore(twentyFourHoursLater)) {
+                System.out.println("Flight from " + flight.getOrigin() + " to " + flight.getDestination());
+            }
+
+        }
     }
 
     public static void searchAndBookFlight() {
