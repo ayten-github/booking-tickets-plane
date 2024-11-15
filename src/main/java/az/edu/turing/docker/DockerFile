@@ -1,0 +1,10 @@
+--First, the docker engine must be running
+
+--How to create container in Docker with cmd:
+--docker run --name postgres -e POSTGRES_PASSWORD=postgres -d postgres
+
+--To access the contents of this container:
+--docker exec -it container_id bash
+
+--To access PsotgreSql:
+--psql -U postgres
