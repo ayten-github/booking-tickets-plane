@@ -7,5 +7,5 @@ public interface FlightService {
 
     FlightDto createFlight(FlightDto flightDto) throws DatabaseException;
 
-    FlightDto findFlightById(int flightId) throws DatabaseException;
+    FlightDto findFlightById(long flightId) throws DatabaseException;
 }

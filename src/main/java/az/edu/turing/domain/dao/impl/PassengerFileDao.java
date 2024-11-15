@@ -1,5 +1,6 @@
 package az.edu.turing.domain.dao.impl;
 
+import az.edu.turing.exception.AlreadyExistsException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import az.edu.turing.domain.dao.PassengerDao;
@@ -19,6 +20,10 @@ public class PassengerFileDao extends PassengerDao {
     private final AtomicLong idGenerator = new AtomicLong(0);
     private final ObjectMapper mapper = new ObjectMapper();
 
+    public PassengerFileDao() {
+        initializeIdGenerator();
+    }
+
     @Override
     public Optional<PassengerEntity> getById(Long id) {
         Collection<PassengerEntity> passengers = getAll();
@@ -35,7 +40,8 @@ public class PassengerFileDao extends PassengerDao {
 
         if (file.exists()) {
             try {
-                passengers = mapper.readValue(file, new TypeReference<>() {});
+                passengers = mapper.readValue(file, new TypeReference<>() {
+                });
             } catch (IOException e) {
                 System.err.println("Error reading PassengerEntity from file: " + e.getMessage());
             }
@@ -46,11 +52,20 @@ public class PassengerFileDao extends PassengerDao {
 
     @Override
     public PassengerEntity save(PassengerEntity entity) {
+
         if (entity.getId() == null) {
             entity.setId(idGenerator.incrementAndGet());
         }
 
         Collection<PassengerEntity> passengers = getAll();
+
+        boolean exists = passengers.stream()
+                .anyMatch(passenger -> passenger.getId().equals(entity.getId()));
+
+        if (exists) {
+            throw new AlreadyExistsException("Passenger already exists with ID: " + entity.getId());
+        }
+
         passengers.add(entity);
 
         saveAll(passengers);
@@ -104,5 +119,14 @@ public class PassengerFileDao extends PassengerDao {
     public boolean existById(long id) {
         Collection<PassengerEntity> passengers = getAll();
         return passengers.stream().anyMatch(passenger -> passenger.getId() == id);
+    }
+
+    private void initializeIdGenerator() {
+        Collection<PassengerEntity> passengers = getAll();
+        long maxId = passengers.stream()
+                .mapToLong(PassengerEntity::getId)
+                .max()
+                .orElse(0);
+        idGenerator.set(maxId);
     }
 }

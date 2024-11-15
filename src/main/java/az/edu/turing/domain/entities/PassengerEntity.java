@@ -20,6 +20,15 @@ public class PassengerEntity implements Serializable {
 
     }
 
+    public PassengerEntity(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     public Long getId() {
         return id;
     }

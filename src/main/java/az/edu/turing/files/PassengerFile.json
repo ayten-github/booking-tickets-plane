@@ -1,7 +1,9 @@
 [ {
   "id" : 1,
-  "firstName" : "Cavad",
-  "lastName" : "Nazirli",
-  "login" : "javadnazirli123",
-  "password" : "21321"
-}]
+  "firstName" : "Nazirli",
+  "lastName" : "javadnazirli123"
+}, {
+  "id" : 2,
+  "firstName" : "Nazirli",
+  "lastName" : "javadnazirli123"
+} ]
