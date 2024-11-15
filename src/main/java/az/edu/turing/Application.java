@@ -90,6 +90,7 @@ public class Application {
     private static void initializeData() {
 
         FlightEntity flight1 = new FlightEntity(
+                1L,
                 LocalDateTime.of(2024, 12, 2, 9, 21),
                 "New York",
                 "Kiev",
@@ -98,6 +99,7 @@ public class Application {
         );
 
         FlightEntity flight2 = new FlightEntity(
+                1L,
                 LocalDateTime.of(2024, 12, 1, 8, 22),
                 "Paris",
                 "Kiev",
@@ -136,7 +138,8 @@ public class Application {
 
     public static void showFlightInfo() {
         System.out.print("\nEnter flight ID: ");
-        String flightId = scanner.nextLine();
+        int flightId = scanner.nextInt();
+        scanner.nextLine();
         FlightEntity flight = flights.get(flightId);
         if (flight != null) {
             System.out.println(flight);
