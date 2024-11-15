@@ -8,20 +8,15 @@ public class FlightController {
 
     private final FlightService flightService;
 
-
     public FlightController(FlightService flightService) {
         this.flightService = flightService;
     }
 
-
     public FlightDto create(FlightDto request) throws DatabaseException {
         return flightService.createFlight(request);
-
     }
 
     public FlightDto findById(long id) throws DatabaseException {
         return flightService.findFlightById(id);
     }
-
-
 }

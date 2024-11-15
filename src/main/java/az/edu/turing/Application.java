@@ -1,38 +1,44 @@
 package az.edu.turing;
 
+import az.edu.turing.controller.BookingController;
+import az.edu.turing.controller.FlightController;
 import az.edu.turing.controller.PassengerController;
+import az.edu.turing.domain.dao.BookingDao;
 import az.edu.turing.domain.dao.FlightDao;
-import az.edu.turing.domain.dao.PassengerDao;
-import az.edu.turing.domain.dao.impl.FlightInMemoryDao;
-import az.edu.turing.domain.dao.impl.PassengerFileDao;
+import az.edu.turing.domain.dao.impl.*;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.InvalidOptionException;
+import az.edu.turing.mapper.BookingMapper;
 import az.edu.turing.mapper.FlightMapper;
-import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
-import az.edu.turing.service.FlightService;
-import az.edu.turing.service.FlightServiceImpl;
-import az.edu.turing.service.PassengerService;
-import az.edu.turing.service.PassengerServiceImpl;
-
+import az.edu.turing.service.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class Application {
-    private FlightDao flightDao=
+    private final FlightDao flightDao=
             new FlightInMemoryDao();
-    FlightMapper flightMapper =new FlightMapper();
-    FlightService flightService=new FlightServiceImpl(flightDao,flightMapper);
+                // new FlightDatabaseDao();
+                    //  new FlightFileDao();
+    private final FlightMapper flightMapper = new FlightMapper();
+    private final FlightService flightService = new FlightServiceImpl(flightDao,flightMapper);
+    private final FlightController flightController = new FlightController(flightService);
 
+    private final BookingDao bookingDao=
+            new BookingInMemoryDao();
+//                 new BookingDatabaseDao();
+//                      new BookingFileDao();
+    private final BookingMapper bookingMapper = new BookingMapper();
+    private final BookingService bookingservice = new BookingServiceImpl(bookingDao,bookingMapper);
+    private final BookingController bookingController = new BookingController(bookingservice);
 
-
-    private static Map<Integer, FlightEntity> flights = new HashMap<>();
-    private static Map<Integer, BookingEntity> bookings = new HashMap<>();
-    private static Map<Integer, List<BookingEntity>> passengerBookings = new HashMap<>();
-    private static Scanner scanner = new Scanner(System.in);
+    private final static Map<Integer, FlightEntity> flights = new HashMap<>();
+    private final static Map<Integer, BookingEntity> bookings = new HashMap<>();
+    private final static Map<Integer, List<BookingEntity>> passengerBookings = new HashMap<>();
+    private final static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws DatabaseException {
 
@@ -60,7 +66,6 @@ public class Application {
 //        final PassengerController passengerController = new PassengerController(passengerService);
 //
 //        run(passengerController);
-
 
     }
 
@@ -177,7 +182,6 @@ public class Application {
         for (int i = 0; i < numPeople; i++) {
             System.out.print("Enter passenger " + (i + 1) + " full name: ");
             String firstName = scanner.nextLine();
-            // Yeni PassengerEntity yaradın
             PassengerEntity passenger = new PassengerEntity();
             passenger.setFirstName(firstName);
             passengers.add(passenger);
@@ -191,15 +195,10 @@ public class Application {
 
         if (flightOpt.isPresent()) {
             FlightEntity flight = flightOpt.get();
-
-            // Yeni rezervasiya yaradırıq
-
             BookingEntity booking = new BookingEntity();
             booking.setFlightId(flight);
             booking.setPassengers(passengers);
             booking.setCancelled(false);
-
-            // BookingEntity-ni bookings mapına əlavə edirik
 
             long newBookingId = bookings.size() + 1;
             booking.setId(newBookingId);
