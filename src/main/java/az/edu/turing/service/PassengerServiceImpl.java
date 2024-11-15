@@ -9,6 +9,8 @@ import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.PassengerDto;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
 
+import java.util.Optional;
+
 public class PassengerServiceImpl implements PassengerService {
 
     private final PassengerDao passengerDao;
@@ -21,9 +23,12 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public PassengerDto createPassenger(CreatePassengerRequest request) throws DatabaseException {
-        final long id = request.getId();
-        if (passengerDao.existById(id)) {
-            throw new AlreadyExistsException("Student already exists with pin: " + id);
+        Optional<PassengerEntity> existingPassenger = passengerDao.getAll().stream()
+                .filter(p -> p.getId().equals(request.getId()))
+                .findFirst();
+
+        if (existingPassenger.isPresent()) {
+            throw new AlreadyExistsException("Student already exists with pin: " + request.getId());
         }
 
         PassengerEntity save = passengerDao.save(new PassengerEntity(

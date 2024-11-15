@@ -27,8 +27,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public FlightDto findFlightById(int flightId) throws DatabaseException {
-        return flightDao.getById((long) flightId)
+    public FlightDto findFlightById(long flightId) throws DatabaseException {
+        return flightDao.getById(flightId)
                 .map(flightMapper::toDto)
                 .orElseThrow(() -> new NotFoundException("Flight with id " + flightId + " not found"));
     }
