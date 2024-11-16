@@ -1,0 +1,6 @@
+[ {
+  "id" : 3,
+  "departureDate" : 1731404748394,
+  "destination" : "Paris",
+  "seatAvailability" : [ true, false, true, true, false ]
+}]
