@@ -56,11 +56,13 @@ public class PassengerFileDaoTest {
     void testGetAll() {
         PassengerEntity passenger1 = new PassengerEntity();
         passenger1.setFirstName("Javad");
+        passenger1.setLastName("Nazirli");
         passenger1.setId(4L);
         passengerDao.save(passenger1);
 
         PassengerEntity passenger2 = new PassengerEntity();
         passenger2.setFirstName("Jabir");
+        passenger2.setLastName("Babayev");
         passenger2.setId(5L);
         passengerDao.save(passenger2);
 
@@ -103,6 +105,7 @@ public class PassengerFileDaoTest {
     void testExistById() {
         PassengerEntity passenger = new PassengerEntity();
         passenger.setFirstName("Jonas");
+        passenger.setLastName("Jackson");
         passenger.setId(23L);
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
