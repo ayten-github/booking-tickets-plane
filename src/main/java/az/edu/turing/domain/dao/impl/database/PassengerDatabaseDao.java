@@ -1,35 +1,27 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.database;
 
 import az.edu.turing.config.DataSourceConfig;
-import az.edu.turing.domain.dao.PassengerDao;
+import az.edu.turing.domain.dao.abstracts.PassengerDao;
+import az.edu.turing.domain.dao.impl.database.schema.DatabaseSchema;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.DatabaseException;
+import az.edu.turing.utils.ResultSetUtil;
 
 import java.sql.*;
 import java.util.*;
 
 public class PassengerDatabaseDao extends PassengerDao {
 
-    private static final String CREATE_TABLE_SQL =
-            "CREATE TABLE IF NOT EXISTS passengers (" +
-                    "id BIGSERIAL PRIMARY KEY, " +
-                    "firstName VARCHAR(255) NOT NULL, " +
-                    "lastName VARCHAR(255) NOT NULL" +
-                    ");";
-
-
     public static void createTablePassengers(Connection con) throws SQLException {
         Statement statement = con.createStatement();
-        statement.execute(CREATE_TABLE_SQL);
+        statement.execute(DatabaseSchema.CREATE_PASSENGER_TABLE);
         System.out.println("Passengers table created");
-
 
     }
 
-
     @Override
-    public Optional<PassengerEntity> getById(Long id) throws DatabaseException {
-        String sql = "SELECT * FROM passengers WHERE id = ?";
+    public Optional<PassengerEntity> getById(Long id) {
+        String sql = "SELECT * FROM passengers WHERE id = ?;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -37,16 +29,12 @@ public class PassengerDatabaseDao extends PassengerDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                PassengerEntity passenger = new PassengerEntity(
-                        resultSet.getLong("id"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("lastName")
-                );
+                PassengerEntity passenger = ResultSetUtil.mapToPassengerEntity(resultSet);
                 return Optional.of(passenger);
             }
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving passenger by ID", e);
+            System.out.println(e.getMessage());
         }
         return Optional.empty();
 
@@ -54,9 +42,9 @@ public class PassengerDatabaseDao extends PassengerDao {
 
 
     @Override
-    public Collection<PassengerEntity> getAll() throws DatabaseException {
+    public Collection<PassengerEntity> getAll() {
         Set<PassengerEntity> passengerEntities = new HashSet<>();
-        String sql = "SELECT * FROM passengers";
+        String sql = "SELECT * FROM passengers;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -64,16 +52,11 @@ public class PassengerDatabaseDao extends PassengerDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                PassengerEntity passengerEntity = new PassengerEntity(
-                        resultSet.getLong("id"),
-                        resultSet.getString("firstName"),
-                        resultSet.getString("LastName")
-                );
-
-                passengerEntities.add(passengerEntity);
+                PassengerEntity passenger = ResultSetUtil.mapToPassengerEntity(resultSet);
+                passengerEntities.add(passenger);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving all passengers", e);
+            System.out.println(e.getMessage());
         }
         return passengerEntities;
     }
@@ -81,14 +64,14 @@ public class PassengerDatabaseDao extends PassengerDao {
 
     @Override
     public PassengerEntity save(PassengerEntity entity) throws DatabaseException {
-        String sql = "INSERT INTO passengers (firstName, lastName) VALUES (?, ?)";
+        String sql = "INSERT INTO passengers (firstName, lastName) VALUES (?, ?);";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, entity.getFirstName());
             statement.setString(2, entity.getLastName());
-            System.out.println(statement.executeUpdate() + "Passengers saved");
+            System.out.println(statement.executeUpdate() + "Passenger saved");
 
             ResultSet generatedKeys = statement.getGeneratedKeys();
 
@@ -96,7 +79,7 @@ public class PassengerDatabaseDao extends PassengerDao {
                 entity.setId(generatedKeys.getLong(1));
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error saving passenger", e);
+            throw new DatabaseException("Error saving passenger");
         }
         return entity;
 
@@ -104,8 +87,8 @@ public class PassengerDatabaseDao extends PassengerDao {
 
 
     @Override
-    public PassengerEntity update(PassengerEntity entity) throws DatabaseException {
-        String sql = "UPDATE passengers SET firstName = ?, lastName = ? WHERE id = ?";
+    public PassengerEntity update(PassengerEntity entity) {
+        String sql = "UPDATE passengers SET firstName = ?, lastName = ? WHERE id = ?;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -113,17 +96,17 @@ public class PassengerDatabaseDao extends PassengerDao {
             preparedStatement.setString(1, entity.getFirstName());
             preparedStatement.setString(2, entity.getLastName());
             preparedStatement.setLong(3, entity.getId());
-            System.out.println(preparedStatement.executeUpdate() + "Passengers updated");
+            System.out.println(preparedStatement.executeUpdate() + "Passenger updated");
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error updating passenger", e);
+            System.out.println(e.getMessage());
         }
         return entity;
     }
 
     @Override
-    public void delete(Long id) throws DatabaseException {
-        String sql = "DELETE FROM passengers WHERE id = ?";
+    public void delete(Long id) {
+        String sql = "DELETE FROM passengers WHERE id = ?;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -132,13 +115,13 @@ public class PassengerDatabaseDao extends PassengerDao {
             System.out.println(preparedStatement.executeUpdate() + " deleted");
 
         } catch (SQLException e) {
-            throw new DatabaseException("Error deleting passenger", e);
+            System.out.println(e.getMessage());
         }
 
     }
 
     @Override
-    public boolean existById(long id) throws DatabaseException {
+    public boolean existsById(long id) throws DatabaseException {
         Optional<PassengerEntity> entity = getById(id);
         return entity.isPresent();
     }

@@ -1,6 +1,6 @@
 package az.edu.turing.service;
 
-import az.edu.turing.domain.dao.FlightDao;
+import az.edu.turing.domain.dao.abstracts.FlightDao;
 import az.edu.turing.exception.AlreadyExistsException;
 import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.NotFoundException;
@@ -19,7 +19,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public FlightDto createFlight(FlightDto flightDto) throws DatabaseException {
-        if (flightDao.existById(flightDto.getId())) {
+        if (flightDao.existsById(flightDto.getId())) {
             throw new AlreadyExistsException("Flight already exists with id: " + flightDto.getId());
         }
 

@@ -1,8 +1,8 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.file;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import az.edu.turing.domain.dao.BookingDao;
+import az.edu.turing.domain.dao.abstracts.BookingDao;
 import az.edu.turing.domain.entities.BookingEntity;
 
 import java.io.File;
@@ -34,7 +34,8 @@ public class BookingFileDao extends BookingDao {
 
         if (file.exists()) {
             try {
-                bookings = mapper.readValue(file, new TypeReference<>() {});
+                bookings = mapper.readValue(file, new TypeReference<>() {
+                });
             } catch (IOException e) {
                 System.err.println("Error reading BookingEntity from file: " + e.getMessage());
             }
@@ -98,7 +99,7 @@ public class BookingFileDao extends BookingDao {
     }
 
     @Override
-    public boolean existById(long id) {
+    public boolean existsById(long id) {
         return getById(id).isPresent();
 
     }

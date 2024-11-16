@@ -9,5 +9,5 @@ public interface PassengerService {
     PassengerDto createPassenger(CreatePassengerRequest request) throws DatabaseException;
 
     PassengerDto findById(long id) throws DatabaseException;
-    boolean existById(long id) throws DatabaseException;
+    boolean existsById(long id) throws DatabaseException;
 }

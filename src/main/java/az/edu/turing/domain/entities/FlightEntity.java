@@ -81,7 +81,6 @@ public class FlightEntity implements Comparable<FlightEntity> {
         this.destination = destination;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +96,8 @@ public class FlightEntity implements Comparable<FlightEntity> {
 
     @Override
     public String toString() {
-        return String.format("FlightEntity{id=%d, departureDate=%s, destination='%s', from='%s', totalSeats=%d, availabilitySeats=%d}", id, departureDate, destination, origin, totalSeats, availabilitySeats);
+        return String.format("{id=%d, departureDate=%s, destination=%s, from=%s, totalSeats=%d, availabilitySeats=%d}",
+                id, departureDate, destination, origin, totalSeats, availabilitySeats);
     }
 
     @Override

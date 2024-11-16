@@ -1,9 +1,9 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.file;
 
 import az.edu.turing.exception.AlreadyExistsException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import az.edu.turing.domain.dao.PassengerDao;
+import az.edu.turing.domain.dao.abstracts.PassengerDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 
 import java.io.File;
@@ -26,9 +26,7 @@ public class PassengerFileDao extends PassengerDao {
 
     @Override
     public Optional<PassengerEntity> getById(Long id) {
-        Collection<PassengerEntity> passengers = getAll();
-
-        return passengers.stream()
+        return getAll().stream()
                 .filter(passenger -> passenger.getId().equals(id))
                 .findFirst();
     }
@@ -116,7 +114,7 @@ public class PassengerFileDao extends PassengerDao {
 
 
     @Override
-    public boolean existById(long id) {
+    public boolean existsById(long id) {
         Collection<PassengerEntity> passengers = getAll();
         return passengers.stream().anyMatch(passenger -> passenger.getId() == id);
     }

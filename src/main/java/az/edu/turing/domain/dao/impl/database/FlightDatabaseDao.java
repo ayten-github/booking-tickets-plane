@@ -1,29 +1,20 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.database;
 
 import az.edu.turing.config.DataSourceConfig;
-import az.edu.turing.domain.dao.FlightDao;
+import az.edu.turing.domain.dao.abstracts.FlightDao;
+import az.edu.turing.domain.dao.impl.database.schema.DatabaseSchema;
 import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.exception.DatabaseException;
+import az.edu.turing.utils.ResultSetUtil;
 
 import java.sql.*;
 import java.util.*;
 
 public class FlightDatabaseDao extends FlightDao {
 
-    private static final String CREATE_TABLE_SQL =
-            "CREATE TABLE IF NOT EXISTS flights (" +
-                    "id BIGSERIAL PRIMARY KEY, " +
-                    "departureDate TIMESTAMP NOT NULL, " +
-                    "destination VARCHAR(255) NOT NULL, " +
-                    "origin VARCHAR(255) NOT NULL, " +
-                    "totalSeats INT NOT NULL, " +
-                    "availabilitySeats INT NOT NULL" +
-                    ");";
-
-
     public static void createTableFlights(Connection con) throws SQLException {
         Statement statement = con.createStatement();
-        statement.execute(CREATE_TABLE_SQL);
+        statement.execute(DatabaseSchema.CREATE_FLIGHT_TABLE);
         System.out.println("Flights table created");
 
 
@@ -31,8 +22,8 @@ public class FlightDatabaseDao extends FlightDao {
 
 
     @Override
-    public Optional<FlightEntity> getById(Long id) throws DatabaseException {
-        String sql = "SELECT * FROM flights WHERE id = ?";
+    public Optional<FlightEntity> getById(Long id) {
+        String sql = "SELECT * FROM flights WHERE id = ?;";
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -40,18 +31,11 @@ public class FlightDatabaseDao extends FlightDao {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                FlightEntity flight = new FlightEntity(
-                        resultSet.getLong("id"),
-                        resultSet.getTimestamp("departureDate").toLocalDateTime(),
-                        resultSet.getString("destination"),
-                        resultSet.getString("origin"),
-                        resultSet.getInt("totalSeats"),
-                        resultSet.getInt("availabilitySeats")
-                );
+                FlightEntity flight = ResultSetUtil.mapRowToFlightEntity(resultSet);
                 return Optional.of(flight);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving flight by ID", e);
+            System.out.println(e.getMessage());
         }
         return Optional.empty();
 
@@ -59,9 +43,9 @@ public class FlightDatabaseDao extends FlightDao {
     }
 
     @Override
-    public Collection<FlightEntity> getAll() throws DatabaseException {
+    public Collection<FlightEntity> getAll() {
         Set<FlightEntity> flights = new HashSet<>();
-        String sql = "SELECT * FROM flights";
+        String sql = "SELECT * FROM flights;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -69,25 +53,18 @@ public class FlightDatabaseDao extends FlightDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                FlightEntity flight = new FlightEntity(
-                        resultSet.getLong("id"),
-                        resultSet.getTimestamp("departureDate").toLocalDateTime(),
-                        resultSet.getString("destination"),
-                        resultSet.getString("origin"),
-                        resultSet.getInt("totalSeats"),
-                        resultSet.getInt("availabilitySeats")
-                );
+                FlightEntity flight = ResultSetUtil.mapRowToFlightEntity(resultSet);
                 flights.add(flight);
             }
         } catch (SQLException e) {
-            throw new DatabaseException("Error retrieving all flights", e);
+            System.out.println(e.getMessage());
         }
         return flights;
     }
 
     @Override
     public FlightEntity save(FlightEntity entity) throws DatabaseException {
-        String sql = "INSERT INTO flights (departureDate, destination, origin, totalSeats, availabilitySeats) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO flights (departureDate, destination, origin, totalSeats, availabilitySeats) VALUES (?, ?, ?, ?, ?);";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -112,14 +89,14 @@ public class FlightDatabaseDao extends FlightDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Error saving flight", e);
+            throw new DatabaseException("Error saving flight");
         }
         return entity;
     }
 
     @Override
-    public FlightEntity update(FlightEntity entity) throws DatabaseException {
-        String sql = "UPDATE flights SET departureDate = ?, destination = ?, origin = ?, totalSeats = ?, availabilitySeats = ? WHERE id = ?";
+    public FlightEntity update(FlightEntity entity) {
+        String sql = "UPDATE flights SET departureDate = ?, destination = ?, origin = ?, totalSeats = ?, availabilitySeats = ? WHERE id = ?;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -133,14 +110,14 @@ public class FlightDatabaseDao extends FlightDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DatabaseException("Error updating flight", e);
+            System.out.println(e.getMessage());
         }
         return entity;
     }
 
     @Override
-    public void delete(Long id) throws DatabaseException {
-        String sql = "DELETE FROM flights WHERE id = ?";
+    public void delete(Long id) {
+        String sql = "DELETE FROM flights WHERE id = ?;";
 
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -149,13 +126,13 @@ public class FlightDatabaseDao extends FlightDao {
             statement.executeUpdate();
             System.out.println("Flight deleted");
         } catch (SQLException e) {
-            throw new DatabaseException("Error deleting flight", e);
+            System.out.println(e.getMessage());
         }
 
     }
 
     @Override
-    public boolean existById(long id) throws DatabaseException {
+    public boolean existsById(long id) throws DatabaseException {
         return getById(id).isPresent();
     }
 

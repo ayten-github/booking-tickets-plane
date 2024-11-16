@@ -1,8 +1,8 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.file;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import az.edu.turing.domain.dao.FlightDao;
+import az.edu.turing.domain.dao.abstracts.FlightDao;
 import az.edu.turing.domain.entities.FlightEntity;
 
 import java.io.File;
@@ -34,7 +34,8 @@ public class FlightFileDao extends FlightDao {
 
         if (file.exists()) {
             try {
-                flights = mapper.readValue(file, new TypeReference<>() {});
+                flights = mapper.readValue(file, new TypeReference<>() {
+                });
             } catch (IOException e) {
                 System.err.println("Error reading FlightEntity from file: " + e.getMessage());
             }
@@ -98,7 +99,7 @@ public class FlightFileDao extends FlightDao {
     }
 
     @Override
-    public boolean existById(long id) {
+    public boolean existsById(long id) {
         Collection<FlightEntity> flights = getAll();
         return flights.stream().anyMatch(flight -> flight.getId().equals(id));
     }
