@@ -5,6 +5,7 @@ import az.edu.turing.controller.FlightController;
 import az.edu.turing.controller.PassengerController;
 import az.edu.turing.domain.dao.BookingDao;
 import az.edu.turing.domain.dao.FlightDao;
+import az.edu.turing.domain.dao.PassengerDao;
 import az.edu.turing.domain.dao.impl.*;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.domain.entities.FlightEntity;
@@ -13,50 +14,51 @@ import az.edu.turing.exception.DatabaseException;
 import az.edu.turing.exception.InvalidOptionException;
 import az.edu.turing.mapper.BookingMapper;
 import az.edu.turing.mapper.FlightMapper;
+import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
 import az.edu.turing.service.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class Application {
-//    private final FlightDao flightDao=
+    private final FlightDao flightDao =
 //            new FlightInMemoryDao();
-//                // new FlightDatabaseDao();
-//                    //  new FlightFileDao();
-//    private final FlightMapper flightMapper = new FlightMapper();
-//    private final FlightService flightService = new FlightServiceImpl(flightDao,flightMapper);
-//    private final FlightController flightController = new FlightController(flightService);
-//
-//    private final BookingDao bookingDao=
+            // new FlightDatabaseDao();
+            new FlightFileDao();
+    private final FlightMapper flightMapper = new FlightMapper();
+    private final FlightService flightService = new FlightServiceImpl(flightDao, flightMapper);
+    private final FlightController flightController = new FlightController(flightService);
+
+    private final BookingDao bookingDao =
 //            new BookingInMemoryDao();
-////                 new BookingDatabaseDao();
-////                      new BookingFileDao();
-//    private final BookingMapper bookingMapper = new BookingMapper();
-//    private final BookingService bookingservice = new BookingServiceImpl(bookingDao,bookingMapper);
-//    private final BookingController bookingController = new BookingController(bookingservice);
-//
-//    private final static Map<Integer, FlightEntity> flights = new HashMap<>();
-//    private final static Map<Integer, BookingEntity> bookings = new HashMap<>();
-//    private final static Map<Integer, List<BookingEntity>> passengerBookings = new HashMap<>();
-//    private final static Scanner scanner = new Scanner(System.in);
-//
-   public static void main(String[] args) throws DatabaseException {
-//
+//                 new BookingDatabaseDao();
+            new BookingFileDao();
+    private final BookingMapper bookingMapper = new BookingMapper();
+    private final BookingService bookingservice = new BookingServiceImpl(bookingDao, bookingMapper);
+    private final BookingController bookingController = new BookingController(bookingservice);
+
+    private final static Map<Integer, FlightEntity> flights = new HashMap<>();
+    private final static Map<Integer, BookingEntity> bookings = new HashMap<>();
+    private final static Map<Integer, List<BookingEntity>> passengerBookings = new HashMap<>();
+    private final static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws DatabaseException {
+
 //        initializeData();
 //        runApplication();
 
-//        PassengerEntity passengerEntity
-//                = new PassengerEntity("Nazirli", "javadnazirli123");
-//        PassengerFileDao passengerFileDao = new PassengerFileDao();
-//        passengerFileDao.save(passengerEntity);
-//        Optional<PassengerEntity> passengerOptional = passengerFileDao.getById(1L);
-//        if (passengerOptional.isPresent()) {
-//            PassengerEntity passenger = passengerOptional.get();
-//            System.out.println("Passenger found: " + passenger.getFirstName() + " " + passenger.getLastName());
-//        } else {
-//            System.out.println("Passenger with ID 1 not found.");
-//        }
-//
+        PassengerEntity passengerEntity
+                = new PassengerEntity("Nazirli", "javadnazirli123");
+        PassengerFileDao passengerFileDao = new PassengerFileDao();
+        passengerFileDao.save(passengerEntity);
+        Optional<PassengerEntity> passengerOptional = passengerFileDao.getById(1L);
+        if (passengerOptional.isPresent()) {
+            PassengerEntity passenger = passengerOptional.get();
+            System.out.println("Passenger found: " + passenger.getFirstName() + " " + passenger.getLastName());
+        } else {
+            System.out.println("Passenger with ID 1 not found.");
+        }
+
 //        final PassengerDao passengerDao =
 ////                new PassengerInMemoryDao();
 //                new PassengerFileDao();
@@ -66,12 +68,12 @@ public class Application {
 //        final PassengerController passengerController = new PassengerController(passengerService);
 //
 //        run(passengerController);
-       PassengerEntity passengerEntity = new PassengerEntity(34L,"Javad","Nazirli");
-       PassengerFileDao passengerFileDao = new PassengerFileDao();
-       passengerFileDao.save(passengerEntity);
-
-    }
-
+//       passengerEntity = new PassengerEntity(34L, "Javad", "Nazirli");
+//       passengerFileDao = new PassengerFileDao();
+//       passengerFileDao.save(passengerEntity);
+//
+//    }
+//
 //    private static void runApplication() {
 //        while (true) {
 //            displayMainMenu();
@@ -263,6 +265,8 @@ public class Application {
 //        System.out.println("Exiting the application.");
 //        System.exit(0);
 //    }
-
-
+//
+//
+//}
+    }
 }
