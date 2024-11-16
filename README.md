@@ -2,7 +2,7 @@
   config -> DataSourceConfig (connection to Database);
   controller -> BookingController, FlightController, PassengerController;
   domain -> DAOs related to Memory, File, and Database; DAO Interface, implementation;
-  exception -> exception classes ralated to Memory, File, and Database;
+  exception -> exception classes related to Memory, File, and Database;
   files;
   mapper -> EntityMapper Interface, mapper classes related to Booking, Flights, and Passengers;
   model -> DTOs, request and response classes;
