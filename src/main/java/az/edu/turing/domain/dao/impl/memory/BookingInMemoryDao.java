@@ -1,6 +1,6 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.memory;
 
-import az.edu.turing.domain.dao.BookingDao;
+import az.edu.turing.domain.dao.abstracts.BookingDao;
 import az.edu.turing.domain.entities.BookingEntity;
 
 import java.util.Collection;
@@ -56,7 +56,7 @@ public class BookingInMemoryDao extends BookingDao {
     }
 
     @Override
-    public boolean existById(long id) {
+    public boolean existsById(long id) {
         return BOOKINGS.stream().anyMatch(booking -> booking.getId().equals(id));
     }
 }

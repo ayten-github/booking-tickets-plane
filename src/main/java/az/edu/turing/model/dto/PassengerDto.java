@@ -11,6 +11,12 @@ public class PassengerDto {
         this.lastName = lastName;
     }
 
+    private PassengerDto(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+    }
+
     public long getId() {
         return id;
     }
@@ -38,5 +44,30 @@ public class PassengerDto {
     @Override
     public String toString() {
         return String.format("PassengerDto{id=%d, firstName='%s', lastName='%s", id, firstName, lastName);
+    }
+
+    public static class Builder {
+        private Long id;
+        private String firstName;
+        private String lastName;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public PassengerDto build() {
+            return new PassengerDto(this);
+        }
     }
 }

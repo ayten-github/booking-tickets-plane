@@ -1,5 +1,6 @@
 package az.edu.turing.domain.entities;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -85,6 +86,5 @@ public class BookingEntity {
         return String.format("BookingEntity{id=%d, flightId=%d, flight=%d, passengers=%s, isCancelled=%s}",
                 id, flightId, flight, passengers, isCancelled);
     }
-
 
 }

@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DataSourceConfig {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static final String URL = System.getenv("DATABASE_URL");
+    private static final String USER = System.getenv("POSTGRESQL_USER");
+    private static final String PASSWORD = System.getenv("POSTGRESQL_PASSWORD");
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);

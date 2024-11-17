@@ -50,4 +50,6 @@ public class BookingDto {
     public void setCancelled(boolean cancelled) {
         isCancelled = cancelled;
     }
+
 }
+

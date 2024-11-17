@@ -5,13 +5,9 @@ import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.model.dto.BookingDto;
 
 public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
+
     @Override
     public BookingEntity toEntity(BookingDto bookingDto) {
-
-        if (bookingDto == null) {
-            return null;
-        }
-
         FlightEntity flightEntity = new FlightEntity();
         flightEntity.setId(bookingDto.getFlightId());
 

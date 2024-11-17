@@ -3,7 +3,9 @@ package az.edu.turing.domain.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.lang.module.ModuleDescriptor;
 import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PassengerEntity implements Serializable {
 
@@ -25,6 +27,12 @@ public class PassengerEntity implements Serializable {
     public PassengerEntity(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    private PassengerEntity(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
     }
 
     public String getFullName() {
@@ -72,5 +80,31 @@ public class PassengerEntity implements Serializable {
     public String toString() {
         return String.format("PassengerEntity{id='%s', firstName='%s', lastName='%s'}",
                 id, firstName, lastName);
+    }
+
+    public static class Builder {
+
+        private Long id;
+        private String firstName;
+        private String lastName;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public PassengerEntity build() {
+            return new PassengerEntity(this);
+        }
     }
 }

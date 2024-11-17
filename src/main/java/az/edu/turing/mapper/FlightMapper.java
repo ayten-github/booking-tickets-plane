@@ -7,29 +7,26 @@ public class FlightMapper implements EntityMapper<FlightEntity, FlightDto> {
 
     @Override
     public FlightEntity toEntity(FlightDto flightDto) {
-        if (flightDto == null) {
-            return null;
-        }
-        return new FlightEntity(
-                flightDto.getId(),
-                flightDto.getDepartureDate(),
-                flightDto.getDestination(),
-                flightDto.getFrom(),
-                flightDto.getTotalSeats(),
-                flightDto.getAvailabilitySeats()
-        );
+        return new FlightEntity.Builder()
+                .id(flightDto.getId())
+                .departureDate(flightDto.getDepartureDate())
+                .destination(flightDto.getDestination())
+                .origin(flightDto.getOrigin())
+                .totalSeats(flightDto.getTotalSeats())
+                .availabilitySeats(flightDto.getAvailabilitySeats())
+                .build();
     }
 
     @Override
     public FlightDto toDto(FlightEntity flightEntity) {
-        return new FlightDto(
-                flightEntity.getId(),
-                flightEntity.getDepartureDate(),
-                flightEntity.getDestination(),
-                flightEntity.getOrigin(),
-                flightEntity.getTotalSeats(),
-                flightEntity.getAvailabilitySeats()
-        );
+        return new FlightDto.Builder()
+                .id(flightEntity.getId())
+                .departureDate(flightEntity.getDepartureDate())
+                .destination(flightEntity.getDestination())
+                .origin(flightEntity.getOrigin())
+                .totalSeats(flightEntity.getTotalSeats())
+                .availabilitySeats(flightEntity.getAvailabilitySeats())
+                .build();
     }
 
 }

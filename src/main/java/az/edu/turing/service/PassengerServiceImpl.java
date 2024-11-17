@@ -1,6 +1,6 @@
 package az.edu.turing.service;
 
-import az.edu.turing.domain.dao.PassengerDao;
+import az.edu.turing.domain.dao.abstracts.PassengerDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.AlreadyExistsException;
 import az.edu.turing.exception.DatabaseException;
@@ -23,12 +23,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public PassengerDto createPassenger(CreatePassengerRequest request) throws DatabaseException {
-        Optional<PassengerEntity> existingPassenger = passengerDao.getAll().stream()
-                .filter(p -> p.getId().equals(request.getId()))
-                .findFirst();
-
-        if (existingPassenger.isPresent()) {
-            throw new AlreadyExistsException("Student already exists with pin: " + request.getId());
+        if (passengerDao.existsById(request.getId())) {
+            throw new AlreadyExistsException("Passenger already exists with ID: " + request.getId());
         }
 
         PassengerEntity save = passengerDao.save(new PassengerEntity(
@@ -49,7 +45,7 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public boolean existById(long id) throws DatabaseException {
-        return passengerDao.existById(id);
+    public boolean existsById(long id) throws DatabaseException {
+        return passengerDao.existsById(id);
     }
 }

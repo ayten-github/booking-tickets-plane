@@ -1,24 +1,35 @@
 package az.edu.turing.model.dto;
 
+import az.edu.turing.domain.entities.FlightEntity;
+
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class FlightDto {
 
     private long id;
     private LocalDateTime departureDate;
     private String destination;
-    private String from;
+    private String origin;
     private int totalSeats;
     private int availabilitySeats;
 
-    public FlightDto(long id, LocalDateTime departureDate, String destination, String from, int totalSeats, int availabilitySeats) {
+    public FlightDto(long id, LocalDateTime departureDate, String destination, String origin, int totalSeats, int availabilitySeats) {
         this.id = id;
         this.departureDate = departureDate;
         this.destination = destination;
-        this.from = from;
+        this.origin = origin;
         this.totalSeats = totalSeats;
         this.availabilitySeats = availabilitySeats;
+    }
+
+    private FlightDto(Builder builder) {
+        this.id = builder.id;
+        this.departureDate = builder.departureDate;
+        this.destination = builder.destination;
+        this.origin = builder.origin;
+        this.totalSeats = builder.totalSeats;
+        this.availabilitySeats = builder.availabilitySeats;
+
     }
 
     public long getId() {
@@ -45,12 +56,12 @@ public class FlightDto {
         this.destination = destination;
     }
 
-    public String getFrom() {
-        return from;
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setOrigin(String from) {
+        this.origin = from;
     }
 
     public int getTotalSeats() {
@@ -67,5 +78,49 @@ public class FlightDto {
 
     public void setAvailabilitySeats(int availabilitySeats) {
         this.availabilitySeats = availabilitySeats;
+    }
+
+    public static class Builder {
+
+        private Long id;
+        private LocalDateTime departureDate;
+        private String destination;
+        private String origin;
+        private int totalSeats;
+        private int availabilitySeats;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder departureDate(LocalDateTime departureDate) {
+            this.departureDate = departureDate;
+            return this;
+        }
+
+        public Builder destination(String destination) {
+            this.destination = destination;
+            return this;
+        }
+
+        public Builder origin(String origin) {
+            this.origin = origin;
+            return this;
+        }
+
+        public Builder totalSeats(int totalSeats) {
+            this.totalSeats = totalSeats;
+            return this;
+        }
+
+        public Builder availabilitySeats(int availabilitySeats) {
+            this.availabilitySeats = availabilitySeats;
+            return this;
+        }
+
+        public FlightDto build() {
+            return new FlightDto(this);
+        }
     }
 }

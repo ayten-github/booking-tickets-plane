@@ -5,15 +5,15 @@ import az.edu.turing.exception.DatabaseException;
 import java.util.Collection;
 import java.util.Optional;
 
-public interface Dao<T, I> {
+public interface Dao<T, E> {
 
-    Optional<T> getById(I id) throws DatabaseException;
+    Optional<T> getById(E id) throws DatabaseException;
 
     Collection<T> getAll() throws DatabaseException;
 
     T save(T entity) throws DatabaseException;
 
-    T update(T entity) throws DatabaseException;
+    T update(T entity);
 
-    void delete(I id) throws DatabaseException;
+    void delete(E id);
 }

@@ -2,25 +2,28 @@ package az.edu.turing;
 
 import az.edu.turing.controller.BookingController;
 import az.edu.turing.controller.FlightController;
-import az.edu.turing.controller.PassengerController;
-import az.edu.turing.domain.dao.BookingDao;
-import az.edu.turing.domain.dao.FlightDao;
-import az.edu.turing.domain.dao.PassengerDao;
-import az.edu.turing.domain.dao.impl.*;
+import az.edu.turing.domain.dao.abstracts.BookingDao;
+import az.edu.turing.domain.dao.abstracts.FlightDao;
+import az.edu.turing.domain.dao.impl.file.BookingFileDao;
+import az.edu.turing.domain.dao.impl.file.FlightFileDao;
+import az.edu.turing.domain.dao.impl.file.PassengerFileDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.DatabaseException;
-import az.edu.turing.exception.InvalidOptionException;
 import az.edu.turing.mapper.BookingMapper;
 import az.edu.turing.mapper.FlightMapper;
-import az.edu.turing.mapper.PassengerMapper;
-import az.edu.turing.model.dto.request.CreatePassengerRequest;
 import az.edu.turing.service.*;
-import java.time.LocalDateTime;
-import java.util.*;
+
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
 
 public class Application {
+
     private final FlightDao flightDao =
 //            new FlightInMemoryDao();
             // new FlightDatabaseDao();

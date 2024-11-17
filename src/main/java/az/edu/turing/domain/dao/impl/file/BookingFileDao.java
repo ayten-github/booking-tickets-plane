@@ -1,8 +1,9 @@
-package az.edu.turing.domain.dao.impl;
+package az.edu.turing.domain.dao.impl.file;
 
+import az.edu.turing.config.FilePath;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import az.edu.turing.domain.dao.BookingDao;
+import az.edu.turing.domain.dao.abstracts.BookingDao;
 import az.edu.turing.domain.entities.BookingEntity;
 
 import java.io.File;
@@ -14,15 +15,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class BookingFileDao extends BookingDao {
 
-    private final String FILE_PATH = "src/main/java/az/edu/turing/files/Booking_records.json";
     private final AtomicLong idGenerator = new AtomicLong(1);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Optional<BookingEntity> getById(Long id) {
-        Collection<BookingEntity> bookings = getAll();
-
-        return bookings.stream()
+        return getAll().stream()
                 .filter(booking -> booking.getId().equals(id))
                 .findFirst();
     }
@@ -30,11 +28,12 @@ public class BookingFileDao extends BookingDao {
     @Override
     public Collection<BookingEntity> getAll() {
         Collection<BookingEntity> bookings = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(FilePath.BOOKING_FILE_PATH);
 
         if (file.exists()) {
             try {
-                bookings = mapper.readValue(file, new TypeReference<>() {});
+                bookings = mapper.readValue(file, new TypeReference<>() {
+                });
             } catch (IOException e) {
                 System.err.println("Error reading BookingEntity from file: " + e.getMessage());
             }
@@ -90,7 +89,7 @@ public class BookingFileDao extends BookingDao {
 
     private void saveAll(Collection<BookingEntity> bookings) {
         try {
-            mapper.writeValue(new File(FILE_PATH), bookings);
+            mapper.writeValue(new File(FilePath.BOOKING_FILE_PATH), bookings);
             System.out.println("All BookingEntities saved to file.");
         } catch (IOException e) {
             System.err.println("Error saving all BookingEntities: " + e.getMessage());
@@ -98,7 +97,7 @@ public class BookingFileDao extends BookingDao {
     }
 
     @Override
-    public boolean existById(long id) {
+    public boolean existsById(long id) {
         return getById(id).isPresent();
 
     }
