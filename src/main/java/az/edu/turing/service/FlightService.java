@@ -16,4 +16,6 @@ public interface FlightService {
 
     List<FlightDto> findFlightsToDateNumber(String to, LocalDate time,int number) throws DatabaseException;
 
+    List<FlightDto> getFlightFromKievInADay() throws DatabaseException;
+
 }

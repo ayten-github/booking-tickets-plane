@@ -8,10 +8,12 @@ import az.edu.turing.mapper.FlightMapper;
 import az.edu.turing.model.dto.FlightDto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlightServiceImpl implements FlightService {
+
 
     private final FlightDao flightDao;
     private final FlightMapper flightMapper;
@@ -53,4 +55,16 @@ public class FlightServiceImpl implements FlightService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<FlightDto> getFlightFromKievInADay() throws DatabaseException {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime twentyFourHoursLater = now.plusHours(24);
+        return flightDao.getAll().stream().filter(f -> f.getOrigin().equals("Kiev") &&
+                f.getDepartureDate().isAfter(now) &&
+                f.getDepartureDate().isBefore(twentyFourHoursLater)).map(flightMapper::toDto).
+                collect(Collectors.toList());
+    }
 }
+
+
+
