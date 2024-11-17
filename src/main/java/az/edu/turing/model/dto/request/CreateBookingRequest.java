@@ -7,25 +7,31 @@ import java.util.List;
 
 public class CreateBookingRequest {
 
-    private final FlightEntity flightId;
-    private final List<PassengerEntity> passengers;
-    private final boolean isCancelled;
+    private long flightId;
+    private final String name;
+    private final String surname;
 
-    public CreateBookingRequest(FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
+    public CreateBookingRequest(long flightId,String name, String surname ) {
         this.flightId = flightId;
-        this.passengers = passengers;
-        this.isCancelled = isCancelled;
+        this.name = name;
+        this.surname = surname;
+
     }
 
-    public FlightEntity getFlightId() {
+    public long getFlightId() {
         return flightId;
     }
 
-    public List<PassengerEntity> getPassengers() {
-        return passengers;
+
+    public void setFlightId(long flightId) {
+        this.flightId = flightId;
     }
 
-    public boolean isCancelled() {
-        return isCancelled;
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 }

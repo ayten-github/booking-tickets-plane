@@ -9,7 +9,9 @@ import az.edu.turing.mapper.PassengerMapper;
 import az.edu.turing.model.dto.PassengerDto;
 import az.edu.turing.model.dto.request.CreatePassengerRequest;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PassengerServiceImpl implements PassengerService {
 
@@ -19,6 +21,13 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerServiceImpl(PassengerDao passengerDao, PassengerMapper passengerMapper) {
         this.passengerDao = passengerDao;
         this.passengerMapper = passengerMapper;
+    }
+
+    @Override
+    public List<PassengerDto> getAllPassengers() throws DatabaseException {
+        return passengerDao.getAll().stream().
+                map(passengerMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -48,4 +57,6 @@ public class PassengerServiceImpl implements PassengerService {
     public boolean existsById(long id) throws DatabaseException {
         return passengerDao.existsById(id);
     }
+
+
 }
