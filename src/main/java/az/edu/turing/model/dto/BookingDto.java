@@ -1,6 +1,5 @@
 package az.edu.turing.model.dto;
 
-import az.edu.turing.domain.entities.FlightEntity;
 import az.edu.turing.domain.entities.PassengerEntity;
 
 import java.util.List;
@@ -8,12 +7,14 @@ import java.util.List;
 public class BookingDto {
 
     private long id;
+    private String fullName;
     private Long flightId;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
-    public BookingDto(long id, Long flightId, List<PassengerEntity> passengers, boolean isCancelled) {
+    public BookingDto(long id, String fullName, Long flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
+        this.fullName = fullName;
         this.flightId = flightId;
         this.passengers = passengers;
         this.isCancelled = isCancelled;
@@ -25,6 +26,14 @@ public class BookingDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Long getFlightId() {

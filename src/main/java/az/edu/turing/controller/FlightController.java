@@ -27,9 +27,10 @@ public class FlightController {
         return flightService.findAllFlights();
     }
 
-    public List<FlightDto> findFlightsToDateNumber(String to, LocalDate date,int number) throws DatabaseException {
-        return flightService.findFlightsToDateNumber(to,date,number);
+    public List<FlightDto> findFlightsToDateNumber(String to, LocalDate date, int number) throws DatabaseException {
+        return flightService.findFlightsToDateNumber(to, date, number);
     }
+
     public List<FlightDto> findFlightsFromKievInADay() throws DatabaseException {
         return flightService.getFlightFromKievInADay();
     }

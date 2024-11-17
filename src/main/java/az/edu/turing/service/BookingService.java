@@ -14,4 +14,8 @@ public interface BookingService {
     List<BookingDto> findAllBookings() throws DatabaseException;
 
     BookingDto getBookingDetail(long id) throws DatabaseException;
+
+    BookingDto findNameSurname(String fullName) throws DatabaseException;
+
+    BookingDto createBooking(long id, String fullName) throws DatabaseException;
 }

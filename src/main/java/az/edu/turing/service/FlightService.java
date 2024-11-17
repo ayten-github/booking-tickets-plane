@@ -18,4 +18,5 @@ public interface FlightService {
 
     List<FlightDto> getFlightFromKievInADay() throws DatabaseException;
 
+    FlightDto getFlightById(long flightId) throws DatabaseException;
 }

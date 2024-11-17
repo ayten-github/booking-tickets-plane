@@ -39,6 +39,19 @@ public class PassengerEntity implements Serializable {
         return firstName + " " + lastName;
     }
 
+    public void setFullName(String fullName) {
+        if (fullName != null) {
+            String[] nameParts = fullName.split(" ", 2);
+            if (nameParts.length == 2) {
+                this.firstName = nameParts[0];
+                this.lastName = nameParts[1];
+            } else {
+                this.firstName = nameParts[0];
+                this.lastName = "";
+            }
+        }
+    }
+
     public Long getId() {
         return id;
     }
