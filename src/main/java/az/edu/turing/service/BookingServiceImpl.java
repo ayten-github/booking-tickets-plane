@@ -7,6 +7,9 @@ import az.edu.turing.exception.NotFoundException;
 import az.edu.turing.mapper.BookingMapper;
 import az.edu.turing.model.dto.BookingDto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class BookingServiceImpl implements BookingService {
 
     private final BookingDao bookingDao;
@@ -32,4 +35,18 @@ public class BookingServiceImpl implements BookingService {
                 .map(bookingMapper::toDto)
                 .orElseThrow(() -> new NotFoundException("Booking with id " + id + " not found"));
     }
+
+    @Override
+    public List<BookingDto> findAllBookings() throws DatabaseException {
+        return bookingDao.getAll().stream()
+                .map(bookingMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public BookingDto getBookingDetail(long id) throws DatabaseException {
+        return bookingDao.getById(id).map(bookingMapper::toDto)
+                .orElseThrow(() -> new NotFoundException("Booking with id " + id + " not found"));
+    }
+
 }
