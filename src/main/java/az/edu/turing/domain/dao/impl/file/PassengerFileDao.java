@@ -1,6 +1,7 @@
 package az.edu.turing.domain.dao.impl.file;
 
 import az.edu.turing.exception.AlreadyExistsException;
+import az.edu.turing.config.FilePath;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import az.edu.turing.domain.dao.abstracts.PassengerDao;
@@ -16,7 +17,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class PassengerFileDao extends PassengerDao {
 
-    private final String FILE_PATH = "src/main/java/az/edu/turing/files/PassengerFile.json";
     private final AtomicLong idGenerator = new AtomicLong(0);
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -34,7 +34,7 @@ public class PassengerFileDao extends PassengerDao {
     @Override
     public Collection<PassengerEntity> getAll() {
         List<PassengerEntity> passengers = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(FilePath.PASSENGER_FILE_PATH);
 
         if (file.exists()) {
             try {
@@ -105,14 +105,13 @@ public class PassengerFileDao extends PassengerDao {
 
     private void saveAll(Collection<PassengerEntity> passengers) {
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FILE_PATH), passengers);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(new File(FilePath.PASSENGER_FILE_PATH), passengers);
             System.out.println("All PassengerEntities saved to file.");
         } catch (IOException e) {
             System.err.println("Error saving all PassengerEntities: " + e.getMessage());
         }
     }
-
-
+    
     @Override
     public boolean existsById(long id) {
         Collection<PassengerEntity> passengers = getAll();

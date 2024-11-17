@@ -1,5 +1,6 @@
 package az.edu.turing.domain.dao.impl.file;
 
+import az.edu.turing.config.FilePath;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import az.edu.turing.domain.dao.abstracts.FlightDao;
@@ -14,15 +15,12 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class FlightFileDao extends FlightDao {
 
-    private final String FILE_PATH = "src/main/java/az/edu/turing/files/Flight_records.json";
     private final AtomicLong idGenerator = new AtomicLong(0);
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public Optional<FlightEntity> getById(Long id) {
-        Collection<FlightEntity> flights = getAll();
-
-        return flights.stream()
+        return getAll().stream()
                 .filter(flight -> flight.getId().equals(id))
                 .findFirst();
     }
@@ -30,7 +28,7 @@ public class FlightFileDao extends FlightDao {
     @Override
     public Collection<FlightEntity> getAll() {
         Collection<FlightEntity> flights = new ArrayList<>();
-        File file = new File(FILE_PATH);
+        File file = new File(FilePath.FLIGHT_FILE_PATH);
 
         if (file.exists()) {
             try {
@@ -91,7 +89,7 @@ public class FlightFileDao extends FlightDao {
 
     private void saveAll(Collection<FlightEntity> flights) {
         try {
-            mapper.writeValue(new File(FILE_PATH), flights);
+            mapper.writeValue(new File(FilePath.FLIGHT_FILE_PATH), flights);
             System.out.println("All FlightEntities saved to file.");
         } catch (IOException e) {
             System.err.println("Error saving all FlightEntities: " + e.getMessage());

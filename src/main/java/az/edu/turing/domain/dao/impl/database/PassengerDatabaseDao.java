@@ -37,9 +37,7 @@ public class PassengerDatabaseDao extends PassengerDao {
             System.out.println(e.getMessage());
         }
         return Optional.empty();
-
     }
-
 
     @Override
     public Collection<PassengerEntity> getAll() {
@@ -85,7 +83,6 @@ public class PassengerDatabaseDao extends PassengerDao {
 
     }
 
-
     @Override
     public PassengerEntity update(PassengerEntity entity) {
         String sql = "UPDATE passengers SET firstName = ?, lastName = ? WHERE id = ?;";
@@ -111,10 +108,21 @@ public class PassengerDatabaseDao extends PassengerDao {
         try (Connection connection = DataSourceConfig.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
+            connection.setAutoCommit(false);
             preparedStatement.setLong(1, id);
+
             System.out.println(preparedStatement.executeUpdate() + " deleted");
+            connection.commit();
 
         } catch (SQLException e) {
+            try (Connection connection = DataSourceConfig.getConnection()) {
+                System.out.println("Error occurred, rolling back transaction...");
+                connection.rollback();
+            } catch (SQLException rollbackException) {
+                System.out.println("Error during rollback: " + rollbackException.getMessage());
+            }
+            System.out.println("Transaction failed: " + e.getMessage());
+
             System.out.println(e.getMessage());
         }
 
@@ -122,8 +130,7 @@ public class PassengerDatabaseDao extends PassengerDao {
 
     @Override
     public boolean existsById(long id) throws DatabaseException {
-        Optional<PassengerEntity> entity = getById(id);
-        return entity.isPresent();
+        return getById(id).isPresent();
     }
 
 }

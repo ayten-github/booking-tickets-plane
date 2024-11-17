@@ -7,22 +7,19 @@ public class PassengerMapper implements EntityMapper<PassengerEntity, PassengerD
 
     @Override
     public PassengerEntity toEntity(PassengerDto passengerDto) {
-        if (passengerDto == null) {
-            return null;
-        }
-        return new PassengerEntity(
-                passengerDto.getId(),
-                passengerDto.getFirstName(),
-                passengerDto.getLastName()
-        );
+        return new PassengerEntity.Builder()
+                .id(passengerDto.getId())
+                .firstName(passengerDto.getFirstName())
+                .lastName(passengerDto.getLastName())
+                .build();
     }
 
     @Override
     public PassengerDto toDto(PassengerEntity passengerEntity) {
-        return new PassengerDto(
-                passengerEntity.getId(),
-                passengerEntity.getFirstName(),
-                passengerEntity.getLastName()
-        );
+        return new PassengerDto.Builder()
+                .id(passengerEntity.getId())
+                .firstName(passengerEntity.getFirstName())
+                .lastName(passengerEntity.getLastName())
+                .build();
     }
 }

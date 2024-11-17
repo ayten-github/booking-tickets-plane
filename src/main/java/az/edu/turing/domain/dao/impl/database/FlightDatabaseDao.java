@@ -17,9 +17,7 @@ public class FlightDatabaseDao extends FlightDao {
         statement.execute(DatabaseSchema.CREATE_FLIGHT_TABLE);
         System.out.println("Flights table created");
 
-
     }
-
 
     @Override
     public Optional<FlightEntity> getById(Long id) {

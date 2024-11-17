@@ -19,7 +19,6 @@ public class DatabaseSchema {
                     "is_cancelled BOOLEAN NOT NULL" +
                     ");";
 
-
     public static final String CREATE_PASSENGER_TABLE =
             "CREATE TABLE IF NOT EXISTS passengers (" +
                     "id BIGSERIAL PRIMARY KEY, " +

@@ -12,6 +12,8 @@ import az.edu.turing.utils.ResultSetUtil;
 import java.sql.*;
 import java.util.*;
 
+import static az.edu.turing.utils.ResultSetUtil.mapToBookingEntity;
+
 public class BookingDatabaseDao extends BookingDao {
 
     public static void createTableBookings(Connection con) throws SQLException {
@@ -20,7 +22,6 @@ public class BookingDatabaseDao extends BookingDao {
         System.out.println("Passengers table created");
 
     }
-
 
     @Override
     public Optional<BookingEntity> getById(Long id) throws DatabaseException {
@@ -33,13 +34,7 @@ public class BookingDatabaseDao extends BookingDao {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                BookingEntity booking = new BookingEntity(
-                        resultSet.getLong("id"),
-                        new FlightEntity(resultSet.getLong("flight_id")),
-                        getPassengersByBookingId(resultSet.getLong("id")),
-                        resultSet.getBoolean("is_cancelled")
-                );
-                return Optional.of(booking);
+                return Optional.of(mapToBookingEntity(resultSet));
             }
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Error retrieving booking by ID");
@@ -59,13 +54,7 @@ public class BookingDatabaseDao extends BookingDao {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                BookingEntity booking = new BookingEntity(
-                        resultSet.getLong("id"),
-                        new FlightEntity(resultSet.getLong("flight_id")),
-                        getPassengersByBookingId(resultSet.getLong("id")),
-                        resultSet.getBoolean("is_cancelled")
-                );
-                bookings.add(booking);
+                bookings.add(mapToBookingEntity(resultSet));
             }
         } catch (SQLException | DatabaseException e) {
             throw new DatabaseException("Error retrieving all bookings");
@@ -138,15 +127,14 @@ public class BookingDatabaseDao extends BookingDao {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-
-
             return resultSet.next();
+
         } catch (SQLException e) {
             throw new DatabaseException("Error checking if booking exists by ID");
         }
     }
 
-    private List<PassengerEntity> getPassengersByBookingId(Long bookingId) throws DatabaseException {
+    public static List<PassengerEntity> getPassengersByBookingId(Long bookingId) throws DatabaseException {
         List<PassengerEntity> passengers;
 
         String sql = "SELECT * FROM passengers WHERE booking_id = ?;";
