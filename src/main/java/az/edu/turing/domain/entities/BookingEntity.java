@@ -1,16 +1,22 @@
 package az.edu.turing.domain.entities;
 
+import az.edu.turing.model.dto.BookingDto;
+import az.edu.turing.model.dto.FlightDto;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class BookingEntity {
 
     private Long id;
+    private PassengerEntity passenger;
     private FlightEntity flightId;
     private FlightEntity flight;
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
+
 
     public BookingEntity(Long id, FlightEntity flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
@@ -31,8 +37,40 @@ public class BookingEntity {
 
     }
 
+    public BookingEntity(FlightDto flight, String fullName1) {
+        this.flight = new FlightEntity();
+        this.flight.setId(flight.getId());
+        this.flight.setDestination(flight.getDestination());
+        this.flight.setDepartureDate(flight.getDepartureDate());
+        this.flight.setOrigin(flight.getOrigin());
+        this.flight.setTotalSeats(flight.getTotalSeats());
+        this.flight.setAvailabilitySeats(flight.getAvailabilitySeats());
+
+        PassengerEntity passenger = new PassengerEntity();
+        passenger.setFullName(fullName1);
+
+        this.passengers = new ArrayList<>();
+        this.passengers.add(passenger);
+
+        this.isCancelled = false;
+    }
+
+
     public FlightEntity getFlight() {
         return flight;
+    }
+
+    public PassengerEntity getPassenger() {
+        return passenger;
+    }
+
+    public String getFullName() {
+        return getPassenger().getFullName();
+    }
+
+
+    public void setPassenger(PassengerEntity passenger) {
+        this.passenger = passenger;
     }
 
     public Long getId() {

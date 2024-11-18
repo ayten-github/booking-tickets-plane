@@ -48,9 +48,9 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<FlightDto> findFlightsToDateNumber(String to, LocalDate time, int number) throws DatabaseException {
         return flightDao.getAll().stream().
-                filter(f->f.getDestination().equalsIgnoreCase(to))
-                .filter(f->f.getDepartureDate().toLocalDate().equals(time))
-                .filter(f->f.getAvailabilitySeats()>=number)
+                filter(f -> f.getDestination().equalsIgnoreCase(to))
+                .filter(f -> f.getDepartureDate().toLocalDate().equals(time))
+                .filter(f -> f.getAvailabilitySeats() >= number)
                 .map(flightMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -60,9 +60,16 @@ public class FlightServiceImpl implements FlightService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime twentyFourHoursLater = now.plusHours(24);
         return flightDao.getAll().stream().filter(f -> f.getOrigin().equals("Kiev") &&
-                f.getDepartureDate().isAfter(now) &&
-                f.getDepartureDate().isBefore(twentyFourHoursLater)).map(flightMapper::toDto).
+                        f.getDepartureDate().isAfter(now) &&
+                        f.getDepartureDate().isBefore(twentyFourHoursLater)).map(flightMapper::toDto).
                 collect(Collectors.toList());
+    }
+
+    @Override
+    public FlightDto getFlightById(long flightId) throws DatabaseException {
+        return flightDao.getById(flightId)
+                .map(flightMapper::toDto)
+                .orElseThrow(() -> new NotFoundException("Flight with ID " + flightId + " not found."));
     }
 }
 

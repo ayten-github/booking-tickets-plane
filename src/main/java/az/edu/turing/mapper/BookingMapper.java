@@ -24,6 +24,7 @@ public class BookingMapper implements EntityMapper<BookingEntity, BookingDto> {
     public BookingDto toDto(BookingEntity bookingEntity) {
         return new BookingDto(
                 bookingEntity.getId(),
+                bookingEntity.getFullName(),
                 bookingEntity.getFlightId(),
                 bookingEntity.getPassengers(),
                 bookingEntity.isCancelled()
