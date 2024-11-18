@@ -12,6 +12,9 @@ public class BookingDto {
     private List<PassengerEntity> passengers;
     private boolean isCancelled;
 
+    public BookingDto() {
+    }
+
     public BookingDto(long id, String fullName, Long flightId, List<PassengerEntity> passengers, boolean isCancelled) {
         this.id = id;
         this.fullName = fullName;

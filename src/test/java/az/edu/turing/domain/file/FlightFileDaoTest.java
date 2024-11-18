@@ -1,15 +1,19 @@
-package az.edu.turing.file;
+package az.edu.turing.domain.file;
 
-import az.edu.turing.domain.dao.impl.FlightFileDao;
+import az.edu.turing.domain.dao.impl.file.FlightFileDao;
 import az.edu.turing.domain.entities.FlightEntity;
-import org.junit.jupiter.api.*;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FlightFileDaoTest {
 
@@ -36,7 +40,8 @@ public class FlightFileDaoTest {
 
         assertNotNull(savedFlight);
         assertNotNull(savedFlight.getId(), "ID should not be null after saving");
-        assertEquals("New York", savedFlight.getDestination(), "Flight destination should match the saved flight");
+        assertEquals("New York", savedFlight.getDestination(),
+                "Flight destination should match the saved flight");
     }
 
     @Test
@@ -50,7 +55,8 @@ public class FlightFileDaoTest {
 
         assertTrue(retrievedFlight.isPresent(), "FlightEntity should be present");
         assertEquals(savedFlight.getId(), retrievedFlight.get().getId(), "IDs should match");
-        assertEquals("New York", retrievedFlight.get().getDestination(), "Flight destinations should match");
+        assertEquals("New York", retrievedFlight.get().getDestination(),
+                "Flight destinations should match");
     }
 
     @Test
@@ -83,7 +89,8 @@ public class FlightFileDaoTest {
 
         Optional<FlightEntity> retrievedFlight = flightDao.getById(savedFlight.getId());
         assertTrue(retrievedFlight.isPresent(), "Flight should be present after update");
-        assertEquals("Los Angeles", retrievedFlight.get().getDestination(), "Destination should match the updated destination");
+        assertEquals("Los Angeles", retrievedFlight.get().getDestination(),
+                "Destination should match the updated destination");
     }
 
     @Test
@@ -93,11 +100,11 @@ public class FlightFileDaoTest {
         flight.setDestination("New York");
         FlightEntity savedFlight = flightDao.save(flight);
 
-        assertTrue(flightDao.existById(savedFlight.getId()), "Flight should exist before deletion");
+        assertTrue(flightDao.existsById(savedFlight.getId()), "Flight should exist before deletion");
 
         flightDao.delete(savedFlight.getId());
 
-        assertFalse(flightDao.existById(savedFlight.getId()), "Flight should not exist after deletion");
+        assertFalse(flightDao.existsById(savedFlight.getId()), "Flight should not exist after deletion");
     }
 
     @Test
@@ -107,8 +114,8 @@ public class FlightFileDaoTest {
         flight.setDestination("New York");
         FlightEntity savedFlight = flightDao.save(flight);
 
-        assertTrue(flightDao.existById(savedFlight.getId()), "Flight should exist");
-        assertFalse(flightDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(flightDao.existsById(savedFlight.getId()), "Flight should exist");
+        assertFalse(flightDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach

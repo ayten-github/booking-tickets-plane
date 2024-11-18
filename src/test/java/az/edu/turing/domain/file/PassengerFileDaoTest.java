@@ -1,14 +1,19 @@
-package az.edu.turing.file;
+package az.edu.turing.domain.file;
 
-import az.edu.turing.domain.dao.impl.PassengerFileDao;
+import az.edu.turing.domain.dao.impl.file.PassengerFileDao;
 import az.edu.turing.domain.entities.PassengerEntity;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PassengerFileDaoTest {
 
@@ -35,7 +40,8 @@ public class PassengerFileDaoTest {
 
         assertNotNull(savedPassenger);
         assertNotNull(savedPassenger.getId(), "ID should not be null after saving");
-        assertEquals("John", savedPassenger.getFirstName(), "First name should match the saved passenger");
+        assertEquals("John", savedPassenger.getFirstName(),
+                "First name should match the saved passenger");
     }
 
     @Test
@@ -84,7 +90,8 @@ public class PassengerFileDaoTest {
 
         Optional<PassengerEntity> retrievedPassenger = passengerDao.getById(savedPassenger.getId());
         assertTrue(retrievedPassenger.isPresent(), "Passenger should be present after update");
-        assertEquals("Leonardo", retrievedPassenger.get().getFirstName(), "Name should match the updated name");
+        assertEquals("Leonardo", retrievedPassenger.get().getFirstName(),
+                "Name should match the updated name");
     }
 
     @Test
@@ -94,11 +101,13 @@ public class PassengerFileDaoTest {
         passenger.setId(89L);
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertTrue(passengerDao.existById(savedPassenger.getId()), "Passenger should exist before deletion");
+        assertTrue(passengerDao.existsById(savedPassenger.getId()),
+                "Passenger should exist before deletion");
 
         passengerDao.delete(savedPassenger.getId());
 
-        assertFalse(passengerDao.existById(savedPassenger.getId()), "Passenger should not exist after deletion");
+        assertFalse(passengerDao.existsById(savedPassenger.getId()),
+                "Passenger should not exist after deletion");
     }
 
     @Test
@@ -109,8 +118,8 @@ public class PassengerFileDaoTest {
         passenger.setId(23L);
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertTrue(passengerDao.existById(savedPassenger.getId()), "Passenger should exist");
-        assertFalse(passengerDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(passengerDao.existsById(savedPassenger.getId()), "Passenger should exist");
+        assertFalse(passengerDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach
