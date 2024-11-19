@@ -1,12 +1,11 @@
 package az.edu.turing.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.lang.module.ModuleDescriptor;
 import java.util.Objects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class PassengerEntity implements Serializable {
 
     private Long id;
