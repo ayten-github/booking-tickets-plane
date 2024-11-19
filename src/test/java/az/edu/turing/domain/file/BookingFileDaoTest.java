@@ -1,14 +1,19 @@
-package az.edu.turing.file;
+package az.edu.turing.domain.file;
 
-import az.edu.turing.domain.dao.impl.BookingFileDao;
+import az.edu.turing.domain.dao.impl.file.BookingFileDao;
 import az.edu.turing.domain.entities.BookingEntity;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BookingFileDaoTest {
 
@@ -19,7 +24,6 @@ public class BookingFileDaoTest {
         String FILE_PATH = "src/main/java/az/edu/turing/files/Booking_records.json";
 
         bookingDao = new BookingFileDao();
-        // Clean up the test file before each test
         File file = new File(FILE_PATH);
         if (file.exists()) {
             file.delete();
@@ -88,14 +92,11 @@ public class BookingFileDaoTest {
         booking.setId(3L);
         BookingEntity savedBooking = bookingDao.save(booking);
 
-        // Ensure it exists before deletion
-        assertTrue(bookingDao.existById(savedBooking.getId()), "Booking should exist before deletion");
+        assertTrue(bookingDao.existsById(savedBooking.getId()), "Booking should exist before deletion");
 
-        // Delete the booking
         bookingDao.delete(savedBooking.getId());
 
-        // Verify it no longer exists
-        assertFalse(bookingDao.existById(savedBooking.getId()), "Booking should not exist after deletion");
+        assertFalse(bookingDao.existsById(savedBooking.getId()), "Booking should not exist after deletion");
     }
 
     @Test
@@ -104,8 +105,8 @@ public class BookingFileDaoTest {
         booking.setId(4L);
         BookingEntity savedBooking = bookingDao.save(booking);
 
-        assertTrue(bookingDao.existById(savedBooking.getId()), "Booking should exist");
-        assertFalse(bookingDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(bookingDao.existsById(savedBooking.getId()), "Booking should exist");
+        assertFalse(bookingDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach

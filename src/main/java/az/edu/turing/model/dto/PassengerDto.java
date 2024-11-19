@@ -11,6 +11,9 @@ public class PassengerDto {
         this.lastName = lastName;
     }
 
+    public PassengerDto() {
+    }
+
     private PassengerDto(Builder builder) {
         this.id = builder.id;
         this.firstName = builder.firstName;

@@ -13,6 +13,9 @@ public class FlightDto {
     private int totalSeats;
     private int availabilitySeats;
 
+    public FlightDto() {
+    }
+
     public FlightDto(long id, LocalDateTime departureDate, String destination, String origin, int totalSeats, int availabilitySeats) {
         this.id = id;
         this.departureDate = departureDate;

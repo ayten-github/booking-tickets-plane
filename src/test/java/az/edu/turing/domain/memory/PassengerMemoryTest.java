@@ -1,6 +1,6 @@
-package az.edu.turing.memory;
+package az.edu.turing.domain.memory;
 
-import az.edu.turing.domain.dao.impl.PassengerInMemoryDao;
+import az.edu.turing.domain.dao.impl.memory.PassengerInMemoryDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Collection;
 import java.util.Optional;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -32,7 +32,7 @@ public class PassengerMemoryTest {
 
         assertNotNull(savedPassenger.getId());
         assertEquals("John", savedPassenger.getFirstName());
-        assertTrue(passengerDao.existById(savedPassenger.getId()));
+        assertTrue(passengerDao.existsById(savedPassenger.getId()));
     }
 
     @Test
@@ -84,7 +84,7 @@ public class PassengerMemoryTest {
 
         passengerDao.delete(savedPassenger.getId());
 
-        assertFalse(passengerDao.existById(savedPassenger.getId()));
+        assertFalse(passengerDao.existsById(savedPassenger.getId()));
     }
 
     @Test
@@ -93,8 +93,8 @@ public class PassengerMemoryTest {
         passenger.setFirstName("Eve");
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertTrue(passengerDao.existById(savedPassenger.getId()));
-        assertFalse(passengerDao.existById(999L));
+        assertTrue(passengerDao.existsById(savedPassenger.getId()));
+        assertFalse(passengerDao.existsById(999L));
     }
 }
 
