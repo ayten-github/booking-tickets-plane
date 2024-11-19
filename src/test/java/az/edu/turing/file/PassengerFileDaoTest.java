@@ -1,6 +1,6 @@
 package az.edu.turing.file;
 
-import az.edu.turing.domain.dao.impl.PassengerFileDao;
+import az.edu.turing.domain.dao.impl.file.PassengerFileDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 import org.junit.jupiter.api.*;
 
@@ -17,7 +17,7 @@ public class PassengerFileDaoTest {
     @BeforeEach
     public void setUp() {
         passengerDao = new PassengerFileDao();
-        String FILE_PATH = "src/main/java/az/edu/turing/files/PassengerFile.json";
+        String FILE_PATH = "src/main/resources/PassengerFile.json";
 
         File file = new File(FILE_PATH);
         if (file.exists()) {
@@ -94,11 +94,11 @@ public class PassengerFileDaoTest {
         passenger.setId(89L);
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertTrue(passengerDao.existById(savedPassenger.getId()), "Passenger should exist before deletion");
+        assertTrue(passengerDao.existsById(savedPassenger.getId()), "Passenger should exist before deletion");
 
         passengerDao.delete(savedPassenger.getId());
 
-        assertFalse(passengerDao.existById(savedPassenger.getId()), "Passenger should not exist after deletion");
+        assertFalse(passengerDao.existsById(savedPassenger.getId()), "Passenger should not exist after deletion");
     }
 
     @Test
@@ -109,13 +109,13 @@ public class PassengerFileDaoTest {
         passenger.setId(23L);
         PassengerEntity savedPassenger = passengerDao.save(passenger);
 
-        assertTrue(passengerDao.existById(savedPassenger.getId()), "Passenger should exist");
-        assertFalse(passengerDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(passengerDao.existsById(savedPassenger.getId()), "Passenger should exist");
+        assertFalse(passengerDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach
     public void tearDown() {
-        String FILE_PATH = "src/main/java/az/edu/turing/files/PassengerFile.json";
+        String FILE_PATH = "src/main/resources/PassengerFile.json";
 
         File file = new File(FILE_PATH);
         if (file.exists()) {

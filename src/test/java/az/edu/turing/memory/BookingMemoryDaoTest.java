@@ -1,6 +1,6 @@
 package az.edu.turing.memory;
 
-import az.edu.turing.domain.dao.impl.BookingInMemoryDao;
+import az.edu.turing.domain.dao.impl.memory.BookingInMemoryDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class BookingMemoryDaoTest {
         BookingEntity savedBooking = bookingDao.save(booking);
 
         assertNotNull(savedBooking.getId());
-        assertTrue(bookingDao.existById(savedBooking.getId()));
+        assertTrue(bookingDao.existsById(savedBooking.getId()));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class BookingMemoryDaoTest {
 
         bookingDao.delete(savedBooking.getId());
 
-        assertFalse(bookingDao.existById(savedBooking.getId()));
+        assertFalse(bookingDao.existsById(savedBooking.getId()));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class BookingMemoryDaoTest {
         booking.setId(null);
         BookingEntity savedBooking = bookingDao.save(booking);
 
-        assertTrue(bookingDao.existById(savedBooking.getId()));
-        assertFalse(bookingDao.existById(999L));
+        assertTrue(bookingDao.existsById(savedBooking.getId()));
+        assertFalse(bookingDao.existsById(999L));
     }
 }

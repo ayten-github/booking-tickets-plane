@@ -1,6 +1,6 @@
 package az.edu.turing.memory;
 
-import az.edu.turing.domain.dao.impl.FlightInMemoryDao;
+import az.edu.turing.domain.dao.impl.memory.FlightInMemoryDao ;
 import az.edu.turing.domain.entities.FlightEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class FlightMemoryTest {
 
         assertNotNull(savedFlight.getId());
         assertEquals(100, savedFlight.getAvailabilitySeats());
-        assertTrue(flightDao.existById(savedFlight.getId()));
+        assertTrue(flightDao.existsById(savedFlight.getId()));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class FlightMemoryTest {
 
         flightDao.delete(savedFlight.getId());
 
-        assertFalse(flightDao.existById(savedFlight.getId()));
+        assertFalse(flightDao.existsById(savedFlight.getId()));
     }
 
     @Test
@@ -94,8 +94,8 @@ public class FlightMemoryTest {
         flight.setAvailabilitySeats(100);
         FlightEntity savedFlight = flightDao.save(flight);
 
-        assertTrue(flightDao.existById(savedFlight.getId()));
-        assertFalse(flightDao.existById(999L));
+        assertTrue(flightDao.existsById(savedFlight.getId()));
+        assertFalse(flightDao.existsById(999L));
     }
 }
 

@@ -1,7 +1,7 @@
 package az.edu.turing.database;
 
 import az.edu.turing.config.DataSourceConfig;
-import az.edu.turing.domain.dao.impl.PassengerDatabaseDao;
+import az.edu.turing.domain.dao.impl.database.PassengerDatabaseDao;
 import az.edu.turing.domain.entities.PassengerEntity;
 import az.edu.turing.exception.DatabaseException;
 import org.junit.jupiter.api.AfterAll;
@@ -135,7 +135,7 @@ public class PassengerDatabaseTest {
         when(connection.prepareStatement(sql)).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
 
-        assertTrue(passengerDatabaseDao.existById(1L));
+        assertTrue(passengerDatabaseDao.existsById(1L));
         verify(preparedStatement).setLong(1, 1L);
     }
 }

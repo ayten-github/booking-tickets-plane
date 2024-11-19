@@ -1,6 +1,6 @@
 package az.edu.turing.file;
 
-import az.edu.turing.domain.dao.impl.FlightFileDao;
+import az.edu.turing.domain.dao.impl.file.FlightFileDao ;
 import az.edu.turing.domain.entities.FlightEntity;
 import org.junit.jupiter.api.*;
 
@@ -93,11 +93,11 @@ public class FlightFileDaoTest {
         flight.setDestination("New York");
         FlightEntity savedFlight = flightDao.save(flight);
 
-        assertTrue(flightDao.existById(savedFlight.getId()), "Flight should exist before deletion");
+        assertTrue(flightDao.existsById(savedFlight.getId()), "Flight should exist before deletion");
 
         flightDao.delete(savedFlight.getId());
 
-        assertFalse(flightDao.existById(savedFlight.getId()), "Flight should not exist after deletion");
+        assertFalse(flightDao.existsById(savedFlight.getId()), "Flight should not exist after deletion");
     }
 
     @Test
@@ -107,8 +107,8 @@ public class FlightFileDaoTest {
         flight.setDestination("New York");
         FlightEntity savedFlight = flightDao.save(flight);
 
-        assertTrue(flightDao.existById(savedFlight.getId()), "Flight should exist");
-        assertFalse(flightDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(flightDao.existsById(savedFlight.getId()), "Flight should exist");
+        assertFalse(flightDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach

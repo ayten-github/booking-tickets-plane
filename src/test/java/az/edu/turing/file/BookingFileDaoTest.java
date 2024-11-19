@@ -1,6 +1,6 @@
 package az.edu.turing.file;
 
-import az.edu.turing.domain.dao.impl.BookingFileDao;
+import az.edu.turing.domain.dao.impl.file.BookingFileDao;
 import az.edu.turing.domain.entities.BookingEntity;
 import org.junit.jupiter.api.*;
 
@@ -89,13 +89,13 @@ public class BookingFileDaoTest {
         BookingEntity savedBooking = bookingDao.save(booking);
 
         // Ensure it exists before deletion
-        assertTrue(bookingDao.existById(savedBooking.getId()), "Booking should exist before deletion");
+        assertTrue(bookingDao.existsById(savedBooking.getId()), "Booking should exist before deletion");
 
         // Delete the booking
         bookingDao.delete(savedBooking.getId());
 
         // Verify it no longer exists
-        assertFalse(bookingDao.existById(savedBooking.getId()), "Booking should not exist after deletion");
+        assertFalse(bookingDao.existsById(savedBooking.getId()), "Booking should not exist after deletion");
     }
 
     @Test
@@ -104,8 +104,8 @@ public class BookingFileDaoTest {
         booking.setId(4L);
         BookingEntity savedBooking = bookingDao.save(booking);
 
-        assertTrue(bookingDao.existById(savedBooking.getId()), "Booking should exist");
-        assertFalse(bookingDao.existById(999L), "Non-existing ID should return false");
+        assertTrue(bookingDao.existsById(savedBooking.getId()), "Booking should exist");
+        assertFalse(bookingDao.existsById(999L), "Non-existing ID should return false");
     }
 
     @AfterEach
